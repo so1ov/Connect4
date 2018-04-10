@@ -43,9 +43,8 @@ void initField(char**& _field, int _size, char _cell)
 }
 
 Connect4Game::Connect4Game(int _size, Connect4Player* _p1, Connect4Player* _p2)
+	:	size_(_size)
 {
-	size_ = _size;
-
 	initField(field_, size_, EmptyCellCharacter);
 
 	if (_p1->getChip() == _p2->getChip())
@@ -64,9 +63,8 @@ Connect4Game::Connect4Game(int _size, Connect4Player* _p1, Connect4Player* _p2)
 }
 
 Connect4Game::Connect4Game(Connect4Player* _p1, Connect4Player* _p2)
+	:	size_(DefaultSize)
 {
-	size_ = DefaultSize;
-
 	initField(field_, size_, EmptyCellCharacter);
 
 	if (_p1->getChip() == _p2->getChip())

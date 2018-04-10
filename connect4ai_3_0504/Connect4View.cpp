@@ -13,5 +13,5 @@ void Connect4View::attachGame(Connect4Game* _game)
 Connect4View::Connect4View(Connect4Game* _attachedGame)
 	: attachedGame_(_attachedGame)
 {
-	attachedGame_ = _attachedGame;
+
 }

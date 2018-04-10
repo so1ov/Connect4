@@ -4,8 +4,9 @@
 #include "windows.h"
 
 Connect4Player::Connect4Player(char _ch)
+	:	chip_(_ch)
 {
-	chip_ = _ch;
+
 }
 
 char Connect4Player::getChip()
