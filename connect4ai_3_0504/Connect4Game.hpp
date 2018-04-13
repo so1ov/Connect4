@@ -19,13 +19,15 @@ public:
 	char** getField();
 	int getSize();
 	void setCustomView(Connect4View*);
+	void win(char);
 
 	enum Constants
 	{
 		DefaultSize = 5,
 		DefaultFirstPlayerCharacter = 'X',
 		DefaultSecondPlayerCharacter = 'O',
-		EmptyCellCharacter = '.'
+		EmptyCellCharacter = '.',
+		UnknownWinner = '?'
 	};
 	
 private:
@@ -38,7 +40,7 @@ private:
 	{
 		int turn;
 		int lastColumn, lastRow;
-		int winner;
+		int winner = UnknownWinner;
 	}now_;
 
 	void gameLoop();

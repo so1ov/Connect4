@@ -31,7 +31,7 @@ int Connect4PlayerAi::findFreeRow(int _column)
 
 int Connect4PlayerAi::decision()
 {
-	static char** field = attachedGame_->getField();
+	/*static char** field = attachedGame_->getField();
 	static int oppositeDirections[][2][2] =
 	{
 		{ 
@@ -107,5 +107,7 @@ int Connect4PlayerAi::decision()
 		}
 	}
 	
-	return numberOfColumnWithMaxSequence;
+	return numberOfColumnWithMaxSequence;*/
+
+	return rand() % attachedGame_->getSize();
 }

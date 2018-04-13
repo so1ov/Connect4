@@ -28,7 +28,7 @@ void Connect4Game::gameLoop()
 
 int Connect4Game::gameOver()
 {
-	if (now_.turn == size_ * size_)
+	if (now_.turn == size_ * size_ || now_.winner != '?')
 	{
 		return 1;
 	}
@@ -91,7 +91,12 @@ Connect4Game::Connect4Game(Connect4Player* _p1, Connect4Player* _p2)
 	this->attachView(new Connect4ViewConsole(this));
 }
 
-
+void Connect4Game::win(char _ch)
+{
+	now_.winner = _ch;
+	system("cls");
+	std::cout << "Player " << _ch << " wins!";
+}
 
 char** Connect4Game::getField()
 {
