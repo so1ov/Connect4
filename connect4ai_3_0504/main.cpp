@@ -4,6 +4,7 @@
 #include <iostream>
 
 int main()
+
 {
 	Connect4Player* p1 = new Connect4PlayerAi('X');
 	Connect4Player* p2 = new Connect4PlayerKeyboard('O');

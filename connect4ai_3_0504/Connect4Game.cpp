@@ -10,23 +10,32 @@ void Connect4Game::start()
 
 void Connect4Game::gameLoop()
 {
+	attachedView_->refresh();
+
 	bool turnIsValid;
-	while (!gameOver())
+	do
 	{
-		attachedView_->refresh();
+		now_.turn++;
 		turnIsValid = false;
 		while (turnIsValid == false)
 		{
 			turnIsValid = this->pushChip(players_[now_.turn % 2]->makeTurn(),
 				players_[now_.turn % 2]->getChip());
 		}
-		now_.turn++;
-	}
+		attachedView_->refresh();
+	} while (!gameOver());
 }
 
 int Connect4Game::gameOver()
 {
-	return 0;
+	if (now_.turn == size_ * size_)
+	{
+		return 1;
+	}
+	else
+	{
+		return 0;
+	}
 }
 
 void initField(char**& _field, int _size, char _cell)

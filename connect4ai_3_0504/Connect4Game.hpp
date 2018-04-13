@@ -19,6 +19,14 @@ public:
 	char** getField();
 	int getSize();
 	void setCustomView(Connect4View*);
+
+	enum Constants
+	{
+		DefaultSize = 5,
+		DefaultFirstPlayerCharacter = 'X',
+		DefaultSecondPlayerCharacter = 'O',
+		EmptyCellCharacter = '.'
+	};
 	
 private:
 	char** field_;
@@ -37,16 +45,6 @@ private:
 	int gameOver();
 	bool pushChip(int, char);
 	void attachView(Connect4View*);
-
-	enum Constants
-	{
-		DefaultSize = 5,
-		DefaultFirstPlayerCharacter = 'X',
-		DefaultSecondPlayerCharacter = 'O',
-		EmptyCellCharacter = '.'
-	};
-
-	
 };
 
 #endif

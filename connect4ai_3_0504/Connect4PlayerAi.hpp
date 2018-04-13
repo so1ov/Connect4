@@ -9,6 +9,8 @@ public:
 	Connect4PlayerAi(char _ch);
 private:
 	int makeTurn();
+	int decision();
+	int findFreeRow(int);
 };
 
 #endif
