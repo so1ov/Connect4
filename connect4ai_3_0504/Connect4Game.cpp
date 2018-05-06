@@ -5,7 +5,6 @@
 
 void Connect4Game::start()
 {
-	now_.turn = 0;
 	this->gameLoop();
 }
 

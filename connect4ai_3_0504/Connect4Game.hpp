@@ -39,7 +39,7 @@ private:
 
 	struct
 	{
-		int turn;
+		int turn = 0;
 		int lastColumn, lastRow;
 		char winner = UnknownWinner;
 		int lastDecision;
