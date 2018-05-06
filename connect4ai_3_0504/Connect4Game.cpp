@@ -29,7 +29,7 @@ void Connect4Game::gameLoop()
 
 int Connect4Game::gameOver()
 {
-	if (now_.turn == size_ * size_ || now_.winner != '?')
+	if (now_.turn == size_ * size_ || now_.winner != UnknownWinner)
 	{
 		return 1;
 	}
@@ -73,40 +73,19 @@ Connect4Game::Connect4Game(int _size, Connect4Player* _p1, Connect4Player* _p2)
 }
 
 Connect4Game::Connect4Game(Connect4Player* _p1, Connect4Player* _p2)
-	:	size_(DefaultSize)
+	:	Connect4Game(DefaultSize, _p1, _p2)
 {
-	initField(field_, size_, EmptyCellCharacter);
-
-	if (_p1->getChip() == _p2->getChip())
-	{
-		_p1->setChip(DefaultFirstPlayerCharacter);
-		_p2->setChip(DefaultSecondPlayerCharacter);
-	}
-
-	players_[0] = _p1;
-	players_[1] = _p2;
-
-	players_[0]->attachGame(this);
-	players_[1]->attachGame(this);
-
-	this->attachView(new Connect4ViewConsole(this));
+	
 }
 
-void Connect4Game::win(char _ch)
+void Connect4Game::win(Connect4Player* _player)
 {
-	now_.winner = _ch;
-	system("cls");
-	std::cout << "Player " << _ch << " wins!";
+	now_.winner = _player->getChip();
 }
 
-std::string Connect4Game::debugInfo()
+char Connect4Game::getWinnerChip()
 {
-	return std::to_string(now_.lastDecision);
-}
-
-void Connect4Game::setLastDecision(int _decision)
-{
-	now_.lastDecision = _decision;
+	return now_.winner;
 }
 
 char** Connect4Game::getField()

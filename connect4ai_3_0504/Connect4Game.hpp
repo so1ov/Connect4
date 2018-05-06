@@ -19,10 +19,8 @@ public:
 	char** getField();
 	int getSize();
 	void setCustomView(Connect4View*);
-	void win(char);
-
-	std::string debugInfo();
-	void setLastDecision(int);
+	void win(Connect4Player*);
+	char getWinnerChip();
 
 	enum Constants
 	{
@@ -43,7 +41,7 @@ private:
 	{
 		int turn;
 		int lastColumn, lastRow;
-		int winner = UnknownWinner;
+		char winner = UnknownWinner;
 		int lastDecision;
 	}now_;
 

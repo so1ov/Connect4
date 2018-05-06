@@ -15,10 +15,11 @@ void Connect4ViewConsole::refresh()
 		}
 		std::cout << std::endl;
 	}
-
-#ifdef DEBUG
-	std::cout << attachedGame_->debugInfo() << std::endl;
-#endif
+	
+	if (attachedGame_->getWinnerChip() != attachedGame_->UnknownWinner)
+	{
+		std::cout << "Player " << attachedGame_->getWinnerChip() << " wins!" << std::endl;
+	}
 }
 
 Connect4ViewConsole::Connect4ViewConsole(Connect4Game* _attachedGame)
