@@ -15,6 +15,10 @@ void Connect4ViewConsole::refresh()
 		}
 		std::cout << std::endl;
 	}
+
+#ifdef DEBUG
+	std::cout << attachedGame_->debugInfo() << std::endl;
+#endif
 }
 
 Connect4ViewConsole::Connect4ViewConsole(Connect4Game* _attachedGame)

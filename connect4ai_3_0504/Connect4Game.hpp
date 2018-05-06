@@ -21,6 +21,9 @@ public:
 	void setCustomView(Connect4View*);
 	void win(char);
 
+	std::string debugInfo();
+	void setLastDecision(int);
+
 	enum Constants
 	{
 		DefaultSize = 5,
@@ -41,6 +44,7 @@ private:
 		int turn;
 		int lastColumn, lastRow;
 		int winner = UnknownWinner;
+		int lastDecision;
 	}now_;
 
 	void gameLoop();

@@ -1,6 +1,7 @@
 #include "Connect4Game.hpp"
 
 #include <iostream>
+#include <string>
 
 void Connect4Game::start()
 {
@@ -96,6 +97,16 @@ void Connect4Game::win(char _ch)
 	now_.winner = _ch;
 	system("cls");
 	std::cout << "Player " << _ch << " wins!";
+}
+
+std::string Connect4Game::debugInfo()
+{
+	return std::to_string(now_.lastDecision);
+}
+
+void Connect4Game::setLastDecision(int _decision)
+{
+	now_.lastDecision = _decision;
 }
 
 char** Connect4Game::getField()

@@ -10,6 +10,7 @@ public:
 private:
 	int makeTurn();
 	int decision();
+	int countOnDirection(int, int, int, int);
 	int findFreeRow(int);
 };
 
