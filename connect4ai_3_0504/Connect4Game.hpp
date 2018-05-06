@@ -13,7 +13,7 @@ class Connect4Game
 {
 public:
 	void start();
-	Connect4Game(int size, Connect4Player* _p1, Connect4Player* _p2);
+	Connect4Game(int _size, Connect4Player* _p1, Connect4Player* _p2);
 	Connect4Game(Connect4Player* _p1, Connect4Player* _p2);
 
 	char** getField();
@@ -25,6 +25,7 @@ public:
 	enum Constants
 	{
 		DefaultSize = 5,
+		WinSequence = 5,
 		DefaultFirstPlayerCharacter = 'X',
 		DefaultSecondPlayerCharacter = 'O',
 		EmptyCellCharacter = '.',
