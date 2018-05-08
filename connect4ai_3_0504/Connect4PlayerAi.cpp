@@ -29,7 +29,25 @@ int Connect4PlayerAi::findFreeRow(int _column)
 	return -1;
 }
 
-int Connect4PlayerAi::countOnDirection(int _x, int _y, int _dx, int _dy)
+int Connect4PlayerAi::firstFreeColumn()
+{
+	static char** field = this->attachedGame_->getField();
+	static int size = this->attachedGame_->getSize();
+
+	int row;
+	for(int column = 0; column < size; column++)
+	{
+		row = findFreeRow(column);
+		if (row != -1)
+		{
+			return column;
+		}
+	}
+
+	return -1;
+}
+
+int Connect4PlayerAi::countMyChipsOnDirection(int _x, int _y, int _dx, int _dy)
 {
 	static char** field = this->attachedGame_->getField();
 	static int size = this->attachedGame_->getSize();
@@ -43,6 +61,37 @@ int Connect4PlayerAi::countOnDirection(int _x, int _y, int _dx, int _dy)
 		currentY < size && currentY >= 0)
 	{
 		if (this->chip_ == field[currentY][currentX])
+		{
+			sequence++;
+		}
+		else
+		{
+			break;
+		}
+
+		currentX += _dx;
+		currentY += _dy;
+	}
+
+	return sequence;
+}
+
+int Connect4PlayerAi::maxPossibleSequenceOnThisDirection(int _x, int _y, int _dx, int _dy)
+{
+	static char** field = this->attachedGame_->getField();
+	static int size = this->attachedGame_->getSize();
+
+	int currentX = _x + _dx;
+	int currentY = _y + _dy;
+	int sequence = 0;
+
+	while (currentX < size && currentX >= 0
+		&&
+		currentY < size && currentY >= 0)
+	{
+		if (this->chip_ == field[currentY][currentX] 
+			||
+			attachedGame_->EmptyCellCharacter == field[currentY][currentX])
 		{
 			sequence++;
 		}
@@ -79,10 +128,12 @@ int Connect4PlayerAi::decision()
 
 	int row;
 	int dx, dy;
-	int lastDecision;
-	int lastDecisionMaxSequence;
-	int bestDecision = 0;
-	int columnToTurn;
+	int currentColumnCurrentSequence;
+	int currentColumnMaxSequence;
+	int currentColumnMaxPossibleSequence;
+	int currentColumnCurrentPossibleSequence;
+	int bestSequence = 0;
+	int bestSequenceColumn = -1;
 	int buffer;
 	int numberOfPairs = sizeof(oppositeDirections) / sizeof(oppositeDirections[0]);
 	int pair = sizeof(oppositeDirections[0]) / sizeof(oppositeDirections[0][0]);
@@ -94,31 +145,48 @@ int Connect4PlayerAi::decision()
 		{
 			continue;
 		}
-		lastDecisionMaxSequence = 0;
-		for (int i = 0; i < numberOfPairs; i++)
+		currentColumnMaxSequence = 0;
+		currentColumnMaxPossibleSequence = 0;
+		for (int thisPair = 0; thisPair < numberOfPairs; thisPair++)
 		{
-			lastDecision = 0;
-			for (int j = 0; j < pair; j++)
+			currentColumnCurrentSequence = 0;
+			currentColumnCurrentPossibleSequence = 0;
+			for (int thisVector = 0; thisVector < pair; thisVector++)
 			{
-				dx = oppositeDirections[i][j][0];
-				dy = oppositeDirections[i][j][1];
-				lastDecision += countOnDirection(column, row, dx, dy);
+				dx = oppositeDirections[thisPair][thisVector][0];
+				dy = oppositeDirections[thisPair][thisVector][1];
+				currentColumnCurrentSequence += countMyChipsOnDirection(column, row, dx, dy);
+				currentColumnCurrentPossibleSequence += maxPossibleSequenceOnThisDirection(column, row, dx, dy);
 			}
-			if (lastDecisionMaxSequence < lastDecision)
+			if (currentColumnMaxSequence < currentColumnCurrentSequence)
 			{
-				lastDecisionMaxSequence = lastDecision;
+				currentColumnMaxSequence = currentColumnCurrentSequence;
+			}
+			if (currentColumnMaxPossibleSequence < currentColumnCurrentPossibleSequence)
+			{
+				currentColumnMaxPossibleSequence = currentColumnCurrentPossibleSequence;
 			}
 		}
-		if (lastDecisionMaxSequence >= bestDecision)
+		if (currentColumnMaxSequence >= bestSequence
+			&&
+			currentColumnMaxPossibleSequence + 1 >= attachedGame_->WinSequence)
 		{
-			bestDecision = lastDecisionMaxSequence;
-			columnToTurn = column;
+			bestSequence = currentColumnMaxSequence;
+			bestSequenceColumn = column;
 		}
 	}
 
-	if (bestDecision + 1 == attachedGame_->WinSequence)
+	if (bestSequence + 1 == attachedGame_->WinSequence)
 	{
 		attachedGame_->win(this);
 	}
-	return columnToTurn;
+
+	if (bestSequenceColumn != -1)
+	{
+		return bestSequenceColumn;
+	}
+	else
+	{
+		return firstFreeColumn();
+	}
 }

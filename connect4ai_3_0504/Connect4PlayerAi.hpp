@@ -10,8 +10,10 @@ public:
 private:
 	int makeTurn();
 	int decision();
-	int countOnDirection(int, int, int, int);
+	int countMyChipsOnDirection(int, int, int, int);
+	int maxPossibleSequenceOnThisDirection(int, int, int, int);
 	int findFreeRow(int);
+	int firstFreeColumn();
 };
 
 #endif
