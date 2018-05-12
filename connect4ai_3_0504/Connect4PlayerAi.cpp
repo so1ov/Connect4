@@ -116,7 +116,7 @@ int Connect4PlayerAi::decision()
 		}
 	}
 
-	if (bestDecision + 1 >= attachedGame_->WinSequence)
+	if (bestDecision + 1 == attachedGame_->WinSequence)
 	{
 		attachedGame_->win(this);
 	}
