@@ -198,12 +198,10 @@ int Connect4PlayerAi::decision()
 	static int columns = attachedGame_->getSize();
 
 	int row;
-	int dx, dy;
 	int currentColumnMaxSequence;
 	int currentColumnMaxPossibleSequence;
 	int bestSequence = 0;
 	int bestSequenceColumn = -1;
-	int buffer;
 
 	for (int column = 0; column < columns; column++)
 	{
