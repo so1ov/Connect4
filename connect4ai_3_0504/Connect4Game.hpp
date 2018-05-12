@@ -1,7 +1,7 @@
 #ifndef CONNECT4GAME_HPP
 #define CONNECT4GAME_HPP
 
-#include <iostream>
+#include "Connect4Util.hpp"
 
 #include "Connect4Player.hpp"
 #include "Connect4View.hpp"
@@ -26,8 +26,6 @@ public:
 	void win(Connect4Player*);
 	char getWinnerChip();
 
-	
-
 private:
 	enum DefaultOptions
 	{
@@ -42,15 +40,14 @@ private:
 
 	struct CurrentState
 	{
-		struct LastTurn
+		struct TurnInfo
 		{
-			char chip_;
-			int x_;
-			int y_;
+			char chip;
+			C4GPoint pt;
 		};
 
 		int turn = 0;
-		LastTurn lastTurn;
+		TurnInfo lastTurn;
 		char winner = UnknownWinner;
 	};
 

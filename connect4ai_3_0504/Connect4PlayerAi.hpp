@@ -1,30 +1,45 @@
 #ifndef CONNECT4PLAYERAI_HPP
 #define CONNECT4PLAYERAI_HPP
 
+#include <stack>
+#include <vector>
+
 #include "Connect4Player.hpp"
+#include "Connect4Util.hpp"
 
 class Connect4PlayerAi : public Connect4Player
 {
 public:
-	Connect4PlayerAi(char _ch);
+	Connect4PlayerAi(char);
 
 private:
+	struct TemporarilyMoveInfo
+	{
+		char chip;
+		int column;
+	};
+	std::stack<TemporarilyMoveInfo> analyzedBranch;
 	int makeTurn();
 	int decision();
-	int findFreeRow(int column);
+	int findFreeRow(int);
 	int firstFreeColumn();
 
-	int maxSequence(int _x, int _y);
-	int maxSequenceForSpecifiedChip(char _chip, int _x, int _y);
+	int maxSequence(C4GPoint);
+	int maxSequenceForSpecifiedChip(char, C4GPoint);
 
-	int maxPossibleSequence(int _x, int _y);
-	int maxPossibleSequenceForSpecifiedChip(char _chip, int _x, int _y);
+	int maxPossibleSequence(C4GPoint);
+	int maxPossibleSequenceForSpecifiedChip(char, C4GPoint);
 
-	int sequenceOnDirection(int _x, int _y, int _dx, int _dy);
-	int sequenceOnDirectionForSpecifiedChip(char _chip, int _x, int _y, int _dx, int _dy);
+	int sequenceOnDirection(C4GPoint, C4GPoint);
+	int sequenceOnDirectionForSpecifiedChip(char, C4GPoint, C4GPoint);
 
-	int possibleSequenceOnDirection(int _x, int _y, int _dx, int _dy);
-	int possibleSequenceOnDirectionForSpecifiedChip(char _chip, int _x, int _y, int _dx, int _dy);
+	int possibleSequenceOnDirection(C4GPoint, C4GPoint);
+	int possibleSequenceOnDirectionForSpecifiedChip(char, C4GPoint, C4GPoint);
+
+	int findBusyRow(int);
+	void temporarilyMove(char, int);
+	void temporarilyMove(int);
+	void undoTemporarilyMove();
 };
 
 #endif

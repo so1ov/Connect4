@@ -1,10 +1,11 @@
 #include "Connect4PlayerAi.hpp"
 
 #include "Connect4Game.hpp"
+#include "Connect4Util.hpp"
 
 #include "windows.h"
 
-static int oppositeDirections[][2][2] =
+static C4GPoint oppositeDirections[][2] =
 {
 	{
 		{ 1, 0 },{ -1, 0 }
@@ -65,19 +66,19 @@ int Connect4PlayerAi::firstFreeColumn()
 	return -1;
 }
 
-int Connect4PlayerAi::sequenceOnDirection(int _x, int _y, int _dx, int _dy)
+int Connect4PlayerAi::sequenceOnDirection(C4GPoint _point, C4GPoint _direction)
 {
-	return sequenceOnDirectionForSpecifiedChip(this->chip_, _x, _y, _dx, _dy);
+	return sequenceOnDirectionForSpecifiedChip(this->chip_, _point, _direction);
 }
 
-int Connect4PlayerAi::sequenceOnDirectionForSpecifiedChip(char _chip, int _x, int _y, int _dx, int _dy)
+int Connect4PlayerAi::sequenceOnDirectionForSpecifiedChip(char _chip, C4GPoint _point, C4GPoint _direction)
 {
 	static char** field = this->attachedGame_->getField();
 	static int rows = this->attachedGame_->getRows();
 	static int columns = this->attachedGame_->getColumns();
 
-	int currentX = _x + _dx;
-	int currentY = _y + _dy;
+	int currentX = _point.X + _direction.X;
+	int currentY = _point.Y + _direction.Y;
 	int sequence = 0;
 
 	while (currentX < columns && currentX >= 0
@@ -93,26 +94,26 @@ int Connect4PlayerAi::sequenceOnDirectionForSpecifiedChip(char _chip, int _x, in
 			break;
 		}
 
-		currentX += _dx;
-		currentY += _dy;
+		currentX += _direction.X;
+		currentY += _direction.Y;
 	}
 
 	return sequence;
 }
 
-int Connect4PlayerAi::possibleSequenceOnDirection(int _x, int _y, int _dx, int _dy)
+int Connect4PlayerAi::possibleSequenceOnDirection(C4GPoint _point, C4GPoint _direction)
 {
-	return possibleSequenceOnDirectionForSpecifiedChip(this->chip_, _x, _y, _dx, _dy);
+	return possibleSequenceOnDirectionForSpecifiedChip(this->chip_, _point, _direction);
 }
 
-int Connect4PlayerAi::possibleSequenceOnDirectionForSpecifiedChip(char _chip, int _x, int _y, int _dx, int _dy)
+int Connect4PlayerAi::possibleSequenceOnDirectionForSpecifiedChip(char _chip, C4GPoint _point, C4GPoint _direction)
 {
 	static char** field = this->attachedGame_->getField();
 	static int rows = this->attachedGame_->getRows();
 	static int columns = this->attachedGame_->getColumns();
 
-	int currentX = _x + _dx;
-	int currentY = _y + _dy;
+	int currentX = _point.X + _direction.X;
+	int currentY = _point.Y + _direction.Y;
 	int sequence = 0;
 
 	while (currentX < columns && currentX >= 0
@@ -130,32 +131,65 @@ int Connect4PlayerAi::possibleSequenceOnDirectionForSpecifiedChip(char _chip, in
 			break;
 		}
 
-		currentX += _dx;
-		currentY += _dy;
+		currentX += _direction.X;
+		currentY += _direction.Y;
 	}
 
 	return sequence;
 }
 
-int Connect4PlayerAi::maxSequence(int _x, int _y)
+int Connect4PlayerAi::findBusyRow(int _column)
 {
-	return maxSequenceForSpecifiedChip(this->chip_, _x, _y);
+	static char** field = attachedGame_->getField();
+	for (int i = attachedGame_->getRows() - 1; i >= 0; i--)
+	{
+		if (field[i][_column] == attachedGame_->getOptions().emptyCellCharacter
+			&&
+			i != 0)
+		{
+			return i - 1;
+		}
+	}
+	return -1;
 }
 
-int Connect4PlayerAi::maxSequenceForSpecifiedChip(char _chip, int _x, int _y)
+void Connect4PlayerAi::temporarilyMove(char _chip, int _column)
+{
+	static char** field = attachedGame_->getField();
+	int row = findBusyRow(_column);
+	field[row][_column] = _chip;
+
+	analyzedBranch.push(TemporarilyMoveInfo{ _chip, _column });
+}
+
+void Connect4PlayerAi::temporarilyMove(int _column)
+{
+	temporarilyMove(this->chip_, _column);
+}
+
+void Connect4PlayerAi::undoTemporarilyMove()
+{
+	analyzedBranch.pop();
+}
+
+int Connect4PlayerAi::maxSequence(C4GPoint _point)
+{
+	return maxSequenceForSpecifiedChip(this->chip_, _point);
+}
+
+int Connect4PlayerAi::maxSequenceForSpecifiedChip(char _chip, C4GPoint _point)
 {
 	int currentSequence;
 	int maxSequence = 0;
-	int dx, dy;
+	C4GPoint direction;
 
 	for (int thisPair = 0; thisPair < numberOfPairs; thisPair++)
 	{
 		currentSequence = 0;
 		for (int thisVector = 0; thisVector < pairOfOppositeVectors; thisVector++)
 		{
-			dx = oppositeDirections[thisPair][thisVector][0];
-			dy = oppositeDirections[thisPair][thisVector][1];
-			currentSequence += sequenceOnDirectionForSpecifiedChip(_chip, _x, _y, dx, dy);
+			direction = oppositeDirections[thisPair][thisVector];
+			currentSequence += sequenceOnDirectionForSpecifiedChip(_chip, _point, direction);
 		}
 		if (currentSequence > maxSequence)
 		{
@@ -166,25 +200,24 @@ int Connect4PlayerAi::maxSequenceForSpecifiedChip(char _chip, int _x, int _y)
 	return maxSequence;
 }
 
-int Connect4PlayerAi::maxPossibleSequence(int _x, int _y)
+int Connect4PlayerAi::maxPossibleSequence(C4GPoint _point)
 {
-	return maxPossibleSequenceForSpecifiedChip(this->chip_, _x, _y);
+	return maxPossibleSequenceForSpecifiedChip(this->chip_, _point);
 }
 
-int Connect4PlayerAi::maxPossibleSequenceForSpecifiedChip(char _chip, int _x, int _y)
+int Connect4PlayerAi::maxPossibleSequenceForSpecifiedChip(char _chip, C4GPoint _point)
 {
 	int currentPossibleSequence;
 	int maxPossibleSequence = 0;
-	int dx, dy;
+	C4GPoint direction;
 
 	for (int thisPair = 0; thisPair < numberOfPairs; thisPair++)
 	{
 		currentPossibleSequence = 0;
 		for (int thisVector = 0; thisVector < pairOfOppositeVectors; thisVector++)
 		{
-			dx = oppositeDirections[thisPair][thisVector][0];
-			dy = oppositeDirections[thisPair][thisVector][1];
-			currentPossibleSequence += possibleSequenceOnDirectionForSpecifiedChip(_chip, _x, _y, dx, dy);
+			direction = oppositeDirections[thisPair][thisVector];
+			currentPossibleSequence += possibleSequenceOnDirectionForSpecifiedChip(_chip, _point, direction);
 		}
 		if (currentPossibleSequence > maxPossibleSequence)
 		{
@@ -200,6 +233,7 @@ int Connect4PlayerAi::decision()
 	static int columns = attachedGame_->getColumns();
 
 	int row;
+	C4GPoint pointToAnalyzeMove;
 	int currentColumnMaxSequence;
 	int currentColumnMaxPossibleSequence;
 	int bestSequence = 0;
@@ -212,8 +246,10 @@ int Connect4PlayerAi::decision()
 		{
 			continue;
 		}
-		currentColumnMaxSequence = maxSequence(column, row);
-		currentColumnMaxPossibleSequence = maxPossibleSequence(column, row);
+
+		pointToAnalyzeMove = { column, row };
+		currentColumnMaxSequence = maxSequence(pointToAnalyzeMove);
+		currentColumnMaxPossibleSequence = maxPossibleSequence(pointToAnalyzeMove);
 		
 		if (currentColumnMaxSequence >= bestSequence
 			&&

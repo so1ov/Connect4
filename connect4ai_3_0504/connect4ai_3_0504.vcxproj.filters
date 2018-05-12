@@ -56,5 +56,8 @@
     <ClInclude Include="Connect4ViewConsole.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Connect4Util.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
