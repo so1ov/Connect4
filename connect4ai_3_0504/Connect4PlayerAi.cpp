@@ -141,11 +141,9 @@ int Connect4PlayerAi::possibleSequenceOnDirectionForSpecifiedChip(char _chip, C4
 int Connect4PlayerAi::findBusyRow(int _column)
 {
 	static char** field = attachedGame_->getField();
-	for (int i = attachedGame_->getRows() - 1; i >= 0; i--)
+	for (int i = attachedGame_->getRows() - 1; i > 0; i--)
 	{
-		if (field[i][_column] == attachedGame_->getOptions().emptyCellCharacter
-			&&
-			i != 0)
+		if (field[i][_column] == attachedGame_->getOptions().emptyCellCharacter)
 		{
 			return i - 1;
 		}
