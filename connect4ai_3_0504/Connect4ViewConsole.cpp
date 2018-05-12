@@ -5,11 +5,13 @@
 void Connect4ViewConsole::refresh()
 {
 	static char** field = attachedGame_->getField();
-	static int size = attachedGame_->getSize();
+	static int rows = this->attachedGame_->getRows();
+	static int columns = this->attachedGame_->getColumns();
+
 	system("cls");
-	for (int i = 0; i < size; i++)
+	for (int i = 0; i < rows; i++)
 	{
-		for (int j = 0; j < size; j++)
+		for (int j = 0; j < columns; j++)
 		{
 			std::cout << field[i][j];
 		}

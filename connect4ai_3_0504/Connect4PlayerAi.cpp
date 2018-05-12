@@ -37,7 +37,7 @@ int Connect4PlayerAi::makeTurn()
 int Connect4PlayerAi::findFreeRow(int _column)
 {
 	static char** field = attachedGame_->getField();
-	for (int i = attachedGame_->getSize()- 1; i >= 0; i--)
+	for (int i = attachedGame_->getRows()- 1; i >= 0; i--)
 	{
 		if (field[i][_column] == attachedGame_->Constants::EmptyCellCharacter)
 		{
@@ -50,10 +50,10 @@ int Connect4PlayerAi::findFreeRow(int _column)
 int Connect4PlayerAi::firstFreeColumn()
 {
 	static char** field = this->attachedGame_->getField();
-	static int size = this->attachedGame_->getSize();
+	static int columns = this->attachedGame_->getColumns();
 
 	int row;
-	for(int column = 0; column < size; column++)
+	for(int column = 0; column < columns; column++)
 	{
 		row = findFreeRow(column);
 		if (row != -1)
@@ -73,15 +73,16 @@ int Connect4PlayerAi::sequenceOnDirection(int _x, int _y, int _dx, int _dy)
 int Connect4PlayerAi::sequenceOnDirectionForSpecifiedChip(char _chip, int _x, int _y, int _dx, int _dy)
 {
 	static char** field = this->attachedGame_->getField();
-	static int size = this->attachedGame_->getSize();
+	static int rows = this->attachedGame_->getRows();
+	static int columns = this->attachedGame_->getColumns();
 
 	int currentX = _x + _dx;
 	int currentY = _y + _dy;
 	int sequence = 0;
 
-	while (currentX < size && currentX >= 0
+	while (currentX < columns && currentX >= 0
 		&&
-		currentY < size && currentY >= 0)
+		currentY < rows && currentY >= 0)
 	{
 		if (_chip == field[currentY][currentX])
 		{
@@ -107,15 +108,16 @@ int Connect4PlayerAi::possibleSequenceOnDirection(int _x, int _y, int _dx, int _
 int Connect4PlayerAi::possibleSequenceOnDirectionForSpecifiedChip(char _chip, int _x, int _y, int _dx, int _dy)
 {
 	static char** field = this->attachedGame_->getField();
-	static int size = this->attachedGame_->getSize();
+	static int rows = this->attachedGame_->getRows();
+	static int columns = this->attachedGame_->getColumns();
 
 	int currentX = _x + _dx;
 	int currentY = _y + _dy;
 	int sequence = 0;
 
-	while (currentX < size && currentX >= 0
+	while (currentX < columns && currentX >= 0
 		&&
-		currentY < size && currentY >= 0)
+		currentY < rows && currentY >= 0)
 	{
 		if (_chip == field[currentY][currentX]
 			||
@@ -195,7 +197,7 @@ int Connect4PlayerAi::maxPossibleSequenceForSpecifiedChip(char _chip, int _x, in
 
 int Connect4PlayerAi::decision()
 {
-	static int columns = attachedGame_->getSize();
+	static int columns = attachedGame_->getColumns();
 
 	int row;
 	int currentColumnMaxSequence;

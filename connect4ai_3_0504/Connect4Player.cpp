@@ -1,8 +1,5 @@
 #include "Connect4Player.hpp"
 
-#include <random>
-#include "windows.h"
-
 Connect4Player::Connect4Player(char _ch)
 	:	chip_(_ch)
 {

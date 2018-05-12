@@ -8,7 +8,7 @@ int main()
 	//Connect4Player* p1 = new Connect4PlayerAi('X');
 	Connect4Player* p1 = new Connect4PlayerKeyboard('X');
 	Connect4Player* p2 = new Connect4PlayerAi('O');
-	(new Connect4Game(p1, p2))->start();
+	(new Connect4Game(6, 7, p1, p2))->start();
 	system("pause");
 }
 

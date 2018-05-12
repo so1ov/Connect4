@@ -13,38 +13,48 @@ class Connect4Game
 {
 public:
 	void start();
-	Connect4Game(int _size, Connect4Player* _p1, Connect4Player* _p2);
+	Connect4Game(int _rows, int _columns, Connect4Player* _p1, Connect4Player* _p2);
 	Connect4Game(Connect4Player* _p1, Connect4Player* _p2);
 
 	char** getField();
-	int getSize();
+	int getColumns();
+	int getRows();
 	void setCustomView(Connect4View*);
 	void win(Connect4Player*);
 	char getWinnerChip();
 
 	enum Constants
 	{
-		DefaultSize = 5,
-		WinSequence = 5,
+		DefaultRows = 6,
+		DefaultColumns = 7,	
+		WinSequence = 4,
 		DefaultFirstPlayerCharacter = 'X',
 		DefaultSecondPlayerCharacter = 'O',
 		EmptyCellCharacter = '.',
 		UnknownWinner = '?'
 	};
-	
+
 private:
+	struct CurrentState
+	{
+		struct LastTurn
+		{
+			char chip_;
+			int x_;
+			int y_;
+		};
+
+		int turn = 0;
+		LastTurn lastTurn;
+		char winner = UnknownWinner;
+	};
+
 	char** field_;
-	int size_;
+	int rows_;
+	int columns_;
 	Connect4Player* players_[2];
 	Connect4View* attachedView_;
-
-	struct
-	{
-		int turn = 0;
-		int lastColumn, lastRow;
-		char winner = UnknownWinner;
-		int lastDecision;
-	}now_;
+	CurrentState now_;
 
 	void gameLoop();
 	int gameOver();

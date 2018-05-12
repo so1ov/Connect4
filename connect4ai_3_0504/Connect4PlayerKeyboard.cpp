@@ -16,7 +16,7 @@ int Connect4PlayerKeyboard::makeTurn()
 {
 	int decision = -1;
 
-	while (decision < 0 || decision > attachedGame_->getSize())
+	while (decision < 0 || decision > attachedGame_->getColumns())
 	{
 		std::cout << "Your turn:";
 		std::cin >> decision;

@@ -28,7 +28,7 @@ void Connect4Game::gameLoop()
 
 int Connect4Game::gameOver()
 {
-	if (now_.turn == size_ * size_ || now_.winner != UnknownWinner)
+	if (now_.turn == columns_* rows_ || now_.winner != UnknownWinner)
 	{
 		return 1;
 	}
@@ -38,23 +38,23 @@ int Connect4Game::gameOver()
 	}
 }
 
-void initField(char**& _field, int _size, char _cell)
+void initField(char**& _field, int _rows, int _columns, char _cell)
 {
-	_field = new char*[_size];
-	for (int i = 0; i < _size; i++)
+	_field = new char*[_rows];
+	for (int i = 0; i < _rows; i++)
 	{
-		_field[i] = new char[_size];
-		for (int j = 0; j < _size; j++)
+		_field[i] = new char[_columns];
+		for (int j = 0; j < _columns; j++)
 		{
 			_field[i][j] = _cell;
 		}
 	}
 }
 
-Connect4Game::Connect4Game(int _size, Connect4Player* _p1, Connect4Player* _p2)
-	:	size_(_size)
+Connect4Game::Connect4Game(int _rows, int _columns, Connect4Player* _p1, Connect4Player* _p2)
+	: rows_(_rows), columns_(_columns)
 {
-	initField(field_, size_, EmptyCellCharacter);
+	initField(field_, _rows, _columns, EmptyCellCharacter);
 
 	if (_p1->getChip() == _p2->getChip())
 	{ 
@@ -72,7 +72,7 @@ Connect4Game::Connect4Game(int _size, Connect4Player* _p1, Connect4Player* _p2)
 }
 
 Connect4Game::Connect4Game(Connect4Player* _p1, Connect4Player* _p2)
-	:	Connect4Game(DefaultSize, _p1, _p2)
+	:	Connect4Game(DefaultRows, DefaultColumns, _p1, _p2)
 {
 	
 }
@@ -92,9 +92,14 @@ char** Connect4Game::getField()
 	return field_;
 }
 
-int Connect4Game::getSize()
+int Connect4Game::getColumns()
 {
-	return size_;
+	return columns_;
+}
+
+int Connect4Game::getRows()
+{
+	return rows_;
 }
 
 void Connect4Game::attachView(Connect4View* _view)
@@ -109,7 +114,7 @@ void Connect4Game::setCustomView(Connect4View* _view)
 
 bool Connect4Game::pushChip(int _column, char _ch)
 {
-	for (int i = size_ - 1; i >= 0; i--)
+	for (int i = rows_ - 1; i >= 0; i--)
 	{
 		if (field_[i][_column] == EmptyCellCharacter)
 		{
