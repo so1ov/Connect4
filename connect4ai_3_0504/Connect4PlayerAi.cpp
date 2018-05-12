@@ -39,7 +39,7 @@ int Connect4PlayerAi::findFreeRow(int _column)
 	static char** field = attachedGame_->getField();
 	for (int i = attachedGame_->getRows()- 1; i >= 0; i--)
 	{
-		if (field[i][_column] == attachedGame_->Constants::EmptyCellCharacter)
+		if (field[i][_column] == attachedGame_->getOptions().emptyCellCharacter)
 		{
 			return i;
 		}
@@ -121,7 +121,7 @@ int Connect4PlayerAi::possibleSequenceOnDirectionForSpecifiedChip(char _chip, in
 	{
 		if (_chip == field[currentY][currentX]
 			||
-			attachedGame_->EmptyCellCharacter == field[currentY][currentX])
+			attachedGame_->getOptions().emptyCellCharacter == field[currentY][currentX])
 		{
 			sequence++;
 		}
@@ -217,14 +217,14 @@ int Connect4PlayerAi::decision()
 		
 		if (currentColumnMaxSequence >= bestSequence
 			&&
-			currentColumnMaxPossibleSequence + 1 >= attachedGame_->WinSequence)
+			currentColumnMaxPossibleSequence + 1 >= attachedGame_->getOptions().winSequence)
 		{
 			bestSequence = currentColumnMaxSequence;
 			bestSequenceColumn = column;
 		}
 	}
 
-	if (bestSequence + 1 >= attachedGame_->WinSequence)
+	if (bestSequence + 1 >= attachedGame_->getOptions().winSequence)
 	{
 		attachedGame_->win(this);
 	}

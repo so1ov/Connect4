@@ -18,7 +18,7 @@ void Connect4ViewConsole::refresh()
 		std::cout << std::endl;
 	}
 	
-	if (attachedGame_->getWinnerChip() != attachedGame_->UnknownWinner)
+	if (attachedGame_->getWinnerChip() != attachedGame_->getOptions().unknownWinner)
 	{
 		std::cout << "Player " << attachedGame_->getWinnerChip() << " wins!" << std::endl;
 	}
