@@ -32,10 +32,10 @@ Connect4PlayerAi::Connect4PlayerAi(char _ch)
 
 int Connect4PlayerAi::makeTurn()
 {
-	return decision();
+	return findBestMove();
 }
 
-int Connect4PlayerAi::findFreeRow(int _column)
+int Connect4PlayerAi::findFirstFreeRow(int _column)
 {
 	static char** field = attachedGame_->getField();
 	for (int i = attachedGame_->getRows()- 1; i >= 0; i--)
@@ -56,7 +56,7 @@ int Connect4PlayerAi::firstFreeColumn()
 	int row;
 	for(int column = 0; column < columns; column++)
 	{
-		row = findFreeRow(column);
+		row = findFirstFreeRow(column);
 		if (row != -1)
 		{
 			return column;
@@ -138,7 +138,7 @@ int Connect4PlayerAi::possibleSequenceOnDirectionForSpecifiedChip(char _chip, C4
 	return sequence;
 }
 
-int Connect4PlayerAi::findBusyRow(int _column)
+int Connect4PlayerAi::findFirstBusyRow(int _column)
 {
 	static char** field = attachedGame_->getField();
 	for (int i = attachedGame_->getRows() - 1; i > 0; i--)
@@ -154,7 +154,7 @@ int Connect4PlayerAi::findBusyRow(int _column)
 void Connect4PlayerAi::temporarilyMove(char _chip, int _column)
 {
 	static char** field = attachedGame_->getField();
-	int row = findBusyRow(_column);
+	int row = findFirstBusyRow(_column);
 	field[row][_column] = _chip;
 
 	analyzedBranch.push(TemporarilyMoveInfo{ _chip, _column });
@@ -226,51 +226,67 @@ int Connect4PlayerAi::maxPossibleSequenceForSpecifiedChip(char _chip, C4GPoint _
 	return maxPossibleSequence;
 }
 
-int Connect4PlayerAi::decision()
+int Connect4PlayerAi::heuristicDecision(C4GPoint _pointToMove)
+{
+	int maxSeq = maxSequence(_pointToMove);
+	int maxPossibleSeq = maxPossibleSequence(_pointToMove);
+
+	if (maxSeq >= attachedGame_->getOptions().winSequence)
+	{
+		return -1;
+	}
+
+	if (maxPossibleSeq < attachedGame_->getOptions().winSequence)
+	{
+		return maxSeq / 2;
+	}
+	else
+	{
+		return maxSeq;
+	}
+}
+
+int Connect4PlayerAi::findBestMove()
 {
 	static int columns = attachedGame_->getColumns();
 
 	int row;
 	C4GPoint pointToAnalyzeMove;
-	int currentColumnMaxSequence;
-	int currentColumnMaxPossibleSequence;
-	int bestSequence = 0;
-	int bestSequenceColumn = -1;
+	int currentColumnDecision;
+	int bestDecision = -1;
+	int bestDecisionColumn = -1;
 
 	for (int column = 0; column < columns; column++)
 	{
-		row = findFreeRow(column);
+		row = findFirstFreeRow(column);
 		if (row == -1)
 		{
 			continue;
 		}
 
 		pointToAnalyzeMove = { column, row };
-		currentColumnMaxSequence = maxSequence(pointToAnalyzeMove);
-		currentColumnMaxPossibleSequence = maxPossibleSequence(pointToAnalyzeMove);
-		
-		if (currentColumnMaxSequence >= bestSequence
-			&&
-			currentColumnMaxPossibleSequence + 1 >= attachedGame_->getOptions().winSequence)
+		currentColumnDecision = heuristicDecision(pointToAnalyzeMove);
+		if (currentColumnDecision == -1)
 		{
-			bestSequence = currentColumnMaxSequence;
-			bestSequenceColumn = column;
+			attachedGame_->win(this);
+		}
+		else if (currentColumnDecision > bestDecision)
+		{
+			bestDecision = currentColumnDecision;
+			bestDecisionColumn = column;
 		}
 	}
 
-	if (bestSequence + 1 >= attachedGame_->getOptions().winSequence)
+	if(bestDecisionColumn != -1)
 	{
-		attachedGame_->win(this);
-	}
-
-	if (bestSequenceColumn != -1)
-	{
-		return bestSequenceColumn;
+		return bestDecisionColumn;
 	}
 	else
 	{
 		return firstFreeColumn();
 	}
 }
+
+
 
 

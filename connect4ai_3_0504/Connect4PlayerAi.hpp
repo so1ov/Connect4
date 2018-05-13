@@ -19,9 +19,13 @@ private:
 		int column;
 	};
 	std::stack<TemporarilyMoveInfo> analyzedBranch;
+
 	int makeTurn();
-	int decision();
-	int findFreeRow(int);
+	int findBestMove();
+	int heuristicDecision(C4GPoint);
+
+	int findFirstFreeRow(int);
+	int findFirstBusyRow(int);
 	int firstFreeColumn();
 
 	int maxSequence(C4GPoint);
@@ -35,8 +39,7 @@ private:
 
 	int possibleSequenceOnDirection(C4GPoint, C4GPoint);
 	int possibleSequenceOnDirectionForSpecifiedChip(char, C4GPoint, C4GPoint);
-
-	int findBusyRow(int);
+	
 	void temporarilyMove(char, int);
 	void temporarilyMove(int);
 	void undoTemporarilyMove();
