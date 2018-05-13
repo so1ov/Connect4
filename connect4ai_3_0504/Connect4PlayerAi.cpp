@@ -254,7 +254,7 @@ int Connect4PlayerAi::findBestMove()
 	C4GPoint pointToAnalyzeMove;
 	int currentColumnDecision;
 	int bestDecision = -1;
-	int bestDecisionColumn = -1;
+	int bestDecisionColumn = -2;
 
 	for (int column = 0; column < columns; column++)
 	{
@@ -269,6 +269,7 @@ int Connect4PlayerAi::findBestMove()
 		if (currentColumnDecision == -1)
 		{
 			attachedGame_->win(this);
+			return currentColumnDecision;
 		}
 		else if (currentColumnDecision > bestDecision)
 		{
@@ -277,7 +278,7 @@ int Connect4PlayerAi::findBestMove()
 		}
 	}
 
-	if(bestDecisionColumn != -1)
+	if(bestDecisionColumn != -2)
 	{
 		return bestDecisionColumn;
 	}
