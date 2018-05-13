@@ -269,6 +269,7 @@ int Connect4PlayerAi::findBestMove()
 		if (currentColumnDecision == -1)
 		{
 			attachedGame_->win(this);
+			return currentColumnDecision;
 		}
 		else if (currentColumnDecision > bestDecision)
 		{
