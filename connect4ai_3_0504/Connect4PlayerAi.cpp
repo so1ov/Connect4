@@ -288,6 +288,3 @@ int Connect4PlayerAi::findBestMove()
 	}
 }
 
-
-
-/**/
