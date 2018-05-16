@@ -27,6 +27,86 @@ void Connect4Game::start()
 	this->gameLoop();
 }
 
+bool Connect4Game::pointOnField(Connect4Game::Point _point)
+{
+	return _point.X >= 0 && _point.X < getColumns()
+		&&
+		_point.Y >= 0 && _point.Y < getRows();
+}
+
+int Connect4Game::maxSequenceOfSpecifiedChipOnThisStraight(Point _point, Point _direction, char _chip)
+{
+	C4GPoint straightBorder = _point;
+	int currentSequence = 0;
+	int maxSequence = -1;
+	while (pointOnField(straightBorder))
+	{
+		straightBorder.X -= _direction.X;
+		straightBorder.Y -= _direction.Y;
+	}
+
+	while (pointOnField(straightBorder))
+	{
+		if (field_[straightBorder.Y][straightBorder.X] == _chip)
+		{
+			currentSequence++;
+		}
+		else
+		{
+			if (currentSequence > maxSequence)
+			{
+				maxSequence = currentSequence;
+			}
+			currentSequence = 0;		
+		}
+
+		straightBorder.X += _direction.X;
+		straightBorder.Y += _direction.Y;
+	}
+	return maxSequence;
+}
+
+bool Connect4Game::findWinSequenceOfSpecifiedChipOnAllStraightsThroughPoint(Point _point, char _chip)
+{
+	C4GPoint direction;
+	int sequence;
+	for (int thisPair = 0; thisPair < Connect4Game::numberOfPairs; thisPair++)
+	{
+		sequence = 0;
+		for (int thisVector = 0; thisVector < Connect4Game::pairOfOppositeVectors; thisVector++)
+		{
+			direction = Connect4Game::oppositeDirections[thisPair][thisVector];
+			sequence = maxSequenceOfSpecifiedChipOnThisStraight(_point, direction, _chip);
+			if (sequence >= WinSequence)
+			{
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
+
+
+void Connect4Game::calculateGameOver()
+{
+	C4GPoint diagonalPoint;
+	int sequence;
+	for (int i = 0, j = 0; i < getColumns() && j < getRows(); i++, j++)
+	{
+		diagonalPoint = { i, j };
+		for (int player = 0; player < sizeof(players_) / sizeof(players_[0]); player++)
+		{
+			if (findWinSequenceOfSpecifiedChipOnAllStraightsThroughPoint(diagonalPoint, players_[player]->getChip()))
+			{
+				now_.winner = players_[player]->getChip();
+				return;
+			}
+		}
+	}
+}
+
 void Connect4Game::gameLoop()
 {
 	attachedView_->refresh();
@@ -41,19 +121,20 @@ void Connect4Game::gameLoop()
 			turnIsValid = this->pushChip(players_[now_.turn % 2]->makeTurn(),
 				players_[now_.turn % 2]->getChip());
 		}
+		this->calculateGameOver();
 		attachedView_->refresh();
 	} while (!gameOver());
 }
 
-int Connect4Game::gameOver()
+bool Connect4Game::gameOver()
 {
 	if (now_.turn == options_.columns * options_.rows || now_.winner != DefaultOptions::UnknownWinner)
 	{
-		return 1;
+		return true;
 	}
 	else
 	{
-		return 0;
+		return false;
 	}
 }
 
@@ -151,4 +232,8 @@ bool Connect4Game::pushChip(int _column, char _ch)
 
 	return false;
 }
+
+
+
+
 

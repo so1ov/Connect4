@@ -73,8 +73,12 @@ private:
 	CurrentState now_;
 
 	void gameLoop();
-	int gameOver();
+	void calculateGameOver();
+	bool gameOver();
 	bool pushChip(int, char);
+	bool pointOnField(Point);
+	bool findWinSequenceOfSpecifiedChipOnAllStraightsThroughPoint(Point, char);
+	int maxSequenceOfSpecifiedChipOnThisStraight(Point, Point, char);
 	void attachView(Connect4View*);
 };
 

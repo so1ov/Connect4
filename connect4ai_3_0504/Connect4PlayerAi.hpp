@@ -1,12 +1,12 @@
 #ifndef CONNECT4PLAYERAI_HPP
 #define CONNECT4PLAYERAI_HPP
 
-#include <stack>
-#include <vector>
-
 #include "Connect4Player.hpp"
 
 #include "Connect4Game.hpp"
+
+#include <stack>
+#include <vector>
 
 class Connect4PlayerAi : public Connect4Player
 {
