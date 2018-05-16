@@ -5,7 +5,8 @@
 #include <vector>
 
 #include "Connect4Player.hpp"
-#include "Connect4Util.hpp"
+
+#include "Connect4Game.hpp"
 
 class Connect4PlayerAi : public Connect4Player
 {
@@ -17,6 +18,7 @@ private:
 	{
 		char chip;
 		int column;
+		int decision;
 	};
 	std::stack<TemporarilyMoveInfo> analyzedBranch;
 
@@ -40,6 +42,7 @@ private:
 	int possibleSequenceOnDirection(C4GPoint, C4GPoint);
 	int possibleSequenceOnDirectionForSpecifiedChip(char, C4GPoint, C4GPoint);
 	
+	void temporarilyMove(char, int, int);
 	void temporarilyMove(char, int);
 	void temporarilyMove(int);
 	void undoTemporarilyMove();

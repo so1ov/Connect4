@@ -1,13 +1,8 @@
 #ifndef CONNECT4GAME_HPP
 #define CONNECT4GAME_HPP
 
-#include "Connect4Util.hpp"
-
-#include "Connect4Player.hpp"
-#include "Connect4View.hpp"
-#include "Connect4ViewConsole.hpp"
-#include "Connect4PlayerAi.hpp"
-#include "Connect4PlayerKeyboard.hpp"
+class Connect4Player;
+class Connect4View;
 
 class Connect4Game
 {
@@ -26,6 +21,16 @@ public:
 	void win(Connect4Player*);
 	char getWinnerChip();
 
+	struct Point
+	{
+		int X;
+		int Y;
+	};
+
+	static Point oppositeDirections[][2];
+	static int numberOfPairs;
+	static int pairOfOppositeVectors;
+
 private:
 	enum DefaultOptions
 	{
@@ -43,7 +48,7 @@ private:
 		struct TurnInfo
 		{
 			char chip;
-			C4GPoint pt;
+			Point pt;
 		};
 
 		int turn = 0;
@@ -72,5 +77,13 @@ private:
 	bool pushChip(int, char);
 	void attachView(Connect4View*);
 };
+
+using C4GPoint = Connect4Game::Point;
+
+#include "Connect4Player.hpp"
+#include "Connect4View.hpp"
+#include "Connect4ViewConsole.hpp"
+#include "Connect4PlayerAi.hpp"
+#include "Connect4PlayerKeyboard.hpp"
 
 #endif

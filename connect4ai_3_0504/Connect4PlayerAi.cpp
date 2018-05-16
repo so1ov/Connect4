@@ -1,28 +1,8 @@
 #include "Connect4PlayerAi.hpp"
 
 #include "Connect4Game.hpp"
-#include "Connect4Util.hpp"
 
 #include "windows.h"
-
-static C4GPoint oppositeDirections[][2] =
-{
-	{
-		{ 1, 0 },{ -1, 0 }
-	},
-	{
-		{ 0, 1 },{ 0, -1 }
-	},
-	{
-		{ 1, 1 },{ -1, -1 }
-	},
-	{
-		{ -1, 1 },{ 1, -1 }
-	}
-};
-
-static int numberOfPairs = sizeof(oppositeDirections) / sizeof(oppositeDirections[0]);
-static int pairOfOppositeVectors = sizeof(oppositeDirections[0]) / sizeof(oppositeDirections[0][0]);
 
 Connect4PlayerAi::Connect4PlayerAi(char _ch)
 	: Connect4Player(_ch)
@@ -151,13 +131,22 @@ int Connect4PlayerAi::findFirstBusyRow(int _column)
 	return -1;
 }
 
+void Connect4PlayerAi::temporarilyMove(char _chip, int _column, int _decision)
+{
+	static char** field = attachedGame_->getField();
+	int row = findFirstBusyRow(_column);
+	field[row][_column] = _chip;
+
+	analyzedBranch.push(TemporarilyMoveInfo{ _chip, _column, _decision });
+}
+
 void Connect4PlayerAi::temporarilyMove(char _chip, int _column)
 {
 	static char** field = attachedGame_->getField();
 	int row = findFirstBusyRow(_column);
 	field[row][_column] = _chip;
 
-	analyzedBranch.push(TemporarilyMoveInfo{ _chip, _column });
+	analyzedBranch.push(TemporarilyMoveInfo{ _chip, _column, -1 });
 }
 
 void Connect4PlayerAi::temporarilyMove(int _column)
@@ -181,12 +170,12 @@ int Connect4PlayerAi::maxSequenceForSpecifiedChip(char _chip, C4GPoint _point)
 	int maxSequence = 0;
 	C4GPoint direction;
 
-	for (int thisPair = 0; thisPair < numberOfPairs; thisPair++)
+	for (int thisPair = 0; thisPair < Connect4Game::numberOfPairs; thisPair++)
 	{
 		currentSequence = 0;
-		for (int thisVector = 0; thisVector < pairOfOppositeVectors; thisVector++)
+		for (int thisVector = 0; thisVector < Connect4Game::pairOfOppositeVectors; thisVector++)
 		{
-			direction = oppositeDirections[thisPair][thisVector];
+			direction = Connect4Game::oppositeDirections[thisPair][thisVector];
 			currentSequence += sequenceOnDirectionForSpecifiedChip(_chip, _point, direction);
 		}
 		if (currentSequence > maxSequence)
@@ -209,12 +198,12 @@ int Connect4PlayerAi::maxPossibleSequenceForSpecifiedChip(char _chip, C4GPoint _
 	int maxPossibleSequence = 0;
 	C4GPoint direction;
 
-	for (int thisPair = 0; thisPair < numberOfPairs; thisPair++)
+	for (int thisPair = 0; thisPair < Connect4Game::numberOfPairs; thisPair++)
 	{
 		currentPossibleSequence = 0;
-		for (int thisVector = 0; thisVector < pairOfOppositeVectors; thisVector++)
+		for (int thisVector = 0; thisVector < Connect4Game::pairOfOppositeVectors; thisVector++)
 		{
-			direction = oppositeDirections[thisPair][thisVector];
+			direction = Connect4Game::oppositeDirections[thisPair][thisVector];
 			currentPossibleSequence += possibleSequenceOnDirectionForSpecifiedChip(_chip, _point, direction);
 		}
 		if (currentPossibleSequence > maxPossibleSequence)

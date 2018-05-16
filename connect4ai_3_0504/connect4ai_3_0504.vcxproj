@@ -125,7 +125,6 @@
     <ClInclude Include="Connect4Player.hpp" />
     <ClInclude Include="Connect4PlayerAi.hpp" />
     <ClInclude Include="Connect4PlayerKeyboard.hpp" />
-    <ClInclude Include="Connect4Util.hpp" />
     <ClInclude Include="Connect4View.hpp" />
     <ClInclude Include="Connect4ViewConsole.hpp" />
   </ItemGroup>
