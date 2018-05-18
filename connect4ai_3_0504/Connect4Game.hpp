@@ -15,7 +15,7 @@ private:
 	struct GameOptions;
 public:
 	void start();
-	Connect4Game(int _rows, int _columns, Connect4Player* _p1, Connect4Player* _p2);
+	Connect4Game(Connect4Player* _p1, Connect4Player* _p2, int _rows, int _columns);
 	Connect4Game(Connect4Player* _p1, Connect4Player* _p2);
 
 	char** getField();
@@ -26,10 +26,10 @@ public:
 	void win(Connect4Player*);
 	char getWinnerChip();
 
-	
+
 
 private:
-	enum DefaultOptions
+	enum class DefaultOptions
 	{
 		Rows = 6,
 		Columns = 7,
@@ -51,24 +51,26 @@ private:
 
 		int turn = 0;
 		LastTurn lastTurn;
-		char winner = UnknownWinner;
+		char winner = (char)DefaultOptions::UnknownWinner;
 	};
 
 	struct GameOptions
 	{
-		int rows = DefaultOptions::Rows;
-		int columns = DefaultOptions::Columns;
-		int winSequence = DefaultOptions::WinSequence;
-		char firstPlayerCharacter = DefaultOptions::FirstPlayerCharacter;
-		char secondPlayerCharacter = DefaultOptions::SecondPlayerCharacter;
-		char emptyCellCharacter = DefaultOptions::EmptyCellCharacter;
-		char unknownWinner = DefaultOptions::UnknownWinner;
-	}options_;
+		int rows = (int)DefaultOptions::Rows;
+		int columns = (int)DefaultOptions::Columns;
+		int winSequence = (int)DefaultOptions::WinSequence;
+		char firstPlayerCharacter = (int)DefaultOptions::FirstPlayerCharacter;
+		char secondPlayerCharacter = (int)DefaultOptions::SecondPlayerCharacter;
+		char emptyCellCharacter = (int)DefaultOptions::EmptyCellCharacter;
+		char unknownWinner = (int)DefaultOptions::UnknownWinner;
+	};
 
 	char** field_;
 	Connect4Player* players_[2];
 	Connect4View* attachedView_;
+	GameOptions options_;
 	CurrentState now_;
+
 
 	void gameLoop();
 	int gameOver();
