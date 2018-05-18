@@ -128,7 +128,7 @@ void Connect4Game::gameLoop()
 
 bool Connect4Game::gameOver()
 {
-	if (now_.turn == options_.columns * options_.rows || now_.winner != DefaultOptions::UnknownWinner)
+	if (now_.turn == options_.columns * options_.rows || now_.winner != (char)DefaultOptions::UnknownWinner)
 	{
 		return true;
 	}
@@ -151,7 +151,7 @@ void initField(char**& _field, int _rows, int _columns, char _cell)
 	}
 }
 
-Connect4Game::Connect4Game(int _rows, int _columns, Connect4Player* _p1, Connect4Player* _p2)
+Connect4Game::Connect4Game(Connect4Player* _p1, Connect4Player* _p2, int _rows = (int)DefaultOptions::Rows, int _columns = (int)DefaultOptions::Columns)
 {
 	options_.rows = _rows;
 	options_.columns = _columns;
@@ -174,7 +174,7 @@ Connect4Game::Connect4Game(int _rows, int _columns, Connect4Player* _p1, Connect
 }
 
 Connect4Game::Connect4Game(Connect4Player* _p1, Connect4Player* _p2)
-	:	Connect4Game(DefaultOptions::Rows, DefaultOptions::Columns, _p1, _p2)
+	:	Connect4Game(_p1, _p2, (int)DefaultOptions::Rows, (int)DefaultOptions::Columns)
 {
 	
 }
