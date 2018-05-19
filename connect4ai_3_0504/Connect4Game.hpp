@@ -29,6 +29,10 @@ public:
 		int y;
 	};
 
+	static Point oppositeDirections[][2];
+	static int numberOfPairs;
+	static int pairOfOppositeDirections;
+
 private:
 	enum class DefaultOptions
 	{

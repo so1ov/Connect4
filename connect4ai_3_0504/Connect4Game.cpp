@@ -3,6 +3,25 @@
 #include <iostream>
 #include <string>
 
+C4GPoint Connect4Game::oppositeDirections[][2] =
+{
+	{
+		{ 1, 0 },{ -1, 0 }
+	},
+	{
+		{ 0, 1 },{ 0, -1 }
+	},
+	{
+		{ 1, 1 },{ -1, -1 }
+	},
+	{
+		{ -1, 1 },{ 1, -1 }
+	}
+};
+
+int Connect4Game::numberOfPairs = sizeof(oppositeDirections) / sizeof(oppositeDirections[0]);
+int Connect4Game::pairOfOppositeDirections = sizeof(oppositeDirections[0]) / sizeof(oppositeDirections[0][0]);
+
 void Connect4Game::start()
 {
 	this->gameLoop();

@@ -4,25 +4,6 @@
 
 #include "windows.h"
 
-static C4GPoint oppositeDirections[][2] =
-{
-	{
-		{ 1, 0 },{ -1, 0 }
-	},
-	{
-		{ 0, 1 },{ 0, -1 }
-	},
-	{
-		{ 1, 1 },{ -1, -1 }
-	},
-	{
-		{ -1, 1 },{ 1, -1 }
-	}
-};
-
-static int numberOfPairs = sizeof(oppositeDirections) / sizeof(oppositeDirections[0]);
-static int pairOfOppositeVectors = sizeof(oppositeDirections[0]) / sizeof(oppositeDirections[0][0]);
-
 Connect4PlayerAi::Connect4PlayerAi(char _ch)
 	: Connect4Player(_ch)
 {
@@ -148,12 +129,12 @@ int Connect4PlayerAi::maxSequenceForSpecifiedChip(char _chip, C4GPoint _point)
 	int maxSequence = 0;
 	C4GPoint direction;
 
-	for (int thisPair = 0; thisPair < numberOfPairs; thisPair++)
+	for (int thisPair = 0; thisPair < Connect4Game::numberOfPairs; thisPair++)
 	{
 		currentSequence = 0;
-		for (int currentDirection = 0; currentDirection < pairOfOppositeVectors; currentDirection++)
+		for (int currentDirection = 0; currentDirection < Connect4Game::pairOfOppositeDirections; currentDirection++)
 		{
-			direction = oppositeDirections[thisPair][currentDirection];
+			direction = Connect4Game::oppositeDirections[thisPair][currentDirection];
 			currentSequence += sequenceOnDirectionForSpecifiedChip(_chip, _point, direction);
 		}
 		if (currentSequence > maxSequence)
@@ -176,12 +157,12 @@ int Connect4PlayerAi::maxPossibleSequenceForSpecifiedChip(char _chip, C4GPoint _
 	int maxPossibleSequence = 0;
 	C4GPoint direction;
 
-	for (int thisPair = 0; thisPair < numberOfPairs; thisPair++)
+	for (int thisPair = 0; thisPair < Connect4Game::numberOfPairs; thisPair++)
 	{
 		currentPossibleSequence = 0;
-		for (int currentDirection = 0; currentDirection < pairOfOppositeVectors; currentDirection++)
+		for (int currentDirection = 0; currentDirection < Connect4Game::pairOfOppositeDirections; currentDirection++)
 		{
-			direction = oppositeDirections[thisPair][currentDirection];
+			direction = Connect4Game::oppositeDirections[thisPair][currentDirection];
 			currentPossibleSequence += possibleSequenceOnDirectionForSpecifiedChip(_chip, _point, direction);
 		}
 		if (currentPossibleSequence > maxPossibleSequence)
