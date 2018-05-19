@@ -145,6 +145,8 @@ bool Connect4Game::pushChip(int _column, char _ch)
 		if (field_[i][_column] == options_.emptyCellCharacter)
 		{
 			field_[i][_column] = _ch;
+			now_.lastTurn.column_ = _column;
+			now_.lastTurn.row_ = i;
 			return true;
 		}
 	}

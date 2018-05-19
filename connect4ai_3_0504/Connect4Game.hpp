@@ -61,8 +61,8 @@ private:
 		struct LastTurn
 		{
 			char chip_;
-			int x_;
-			int y_;
+			int column_;
+			int row_;
 		};
 
 		int turn = 0;
