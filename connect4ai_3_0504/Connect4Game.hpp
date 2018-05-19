@@ -81,6 +81,9 @@ private:
 	int gameOver();
 	bool pushChip(int, char);
 	void attachView(Connect4View*);
+
+	int maxSequenceForSpecifiedChip(char _chip, Point _point);
+	int sequenceOnDirectionForSpecifiedChip(char _chip, Point _point, Point _direction);
 };
 
 using C4GPoint = Connect4Game::Point;

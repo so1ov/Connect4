@@ -133,6 +133,56 @@ void Connect4Game::attachView(Connect4View* _view)
 	this->attachedView_ = _view;
 }
 
+int Connect4Game::maxSequenceForSpecifiedChip(char _chip, Point _point)
+{
+	int currentSequence;
+	int maxSequence = 0;
+	C4GPoint direction;
+
+	for (int thisPair = 0; thisPair < Connect4Game::numberOfPairs; thisPair++)
+	{
+		currentSequence = 0;
+		for (int currentDirection = 0; currentDirection < Connect4Game::pairOfOppositeDirections; currentDirection++)
+		{
+			direction = Connect4Game::oppositeDirections[thisPair][currentDirection];
+			currentSequence += sequenceOnDirectionForSpecifiedChip(_chip, _point, direction);
+		}
+		if (currentSequence > maxSequence)
+		{
+			maxSequence = currentSequence;
+		}
+	}
+
+	return maxSequence;
+}
+
+int Connect4Game::sequenceOnDirectionForSpecifiedChip(char _chip, Point _point, Point _direction)
+{
+
+	int currentX = _point.x + _direction.x;
+	int currentY = _point.y + _direction.y;
+	int sequence = 0;
+
+	while (currentX < options_.columns && currentX >= 0
+		&&
+		currentY < options_.rows && currentY >= 0)
+	{
+		if (_chip == field_[currentY][currentX])
+		{
+			sequence++;
+		}
+		else
+		{
+			break;
+		}
+
+		currentX += _direction.x;
+		currentY += _direction.y;
+	}
+
+	return sequence;
+}
+
 void Connect4Game::setCustomView(Connect4View* _view)
 {
 	this->attachView(_view);

@@ -22,7 +22,7 @@ private:
 	int maxPossibleSequence(C4GPoint);
 	int maxPossibleSequenceForSpecifiedChip(char _chip, C4GPoint _point);
 
-	int sequenceOnDirection(C4GPoint, C4GPoint _direction);
+	int sequenceOnDirection(C4GPoint _point, C4GPoint _direction);
 	int sequenceOnDirectionForSpecifiedChip(char _chip, C4GPoint _point, C4GPoint _direction);
 
 	int possibleSequenceOnDirection(C4GPoint, C4GPoint _direction);
