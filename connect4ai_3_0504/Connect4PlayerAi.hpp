@@ -3,6 +3,8 @@
 
 #include "Connect4Player.hpp"
 
+#include "Connect4Game.hpp"
+
 class Connect4PlayerAi : public Connect4Player
 {
 public:
@@ -14,17 +16,17 @@ private:
 	int findFreeRow(int column);
 	int firstFreeColumn();
 
-	int maxSequence(int _x, int _y);
-	int maxSequenceForSpecifiedChip(char _chip, int _x, int _y);
+	int maxSequence(C4GPoint);
+	int maxSequenceForSpecifiedChip(char _chip, C4GPoint _point);
 
-	int maxPossibleSequence(int _x, int _y);
-	int maxPossibleSequenceForSpecifiedChip(char _chip, int _x, int _y);
+	int maxPossibleSequence(C4GPoint);
+	int maxPossibleSequenceForSpecifiedChip(char _chip, C4GPoint _point);
 
-	int sequenceOnDirection(int _x, int _y, int _dx, int _dy);
-	int sequenceOnDirectionForSpecifiedChip(char _chip, int _x, int _y, int _dx, int _dy);
+	int sequenceOnDirection(C4GPoint, C4GPoint _direction);
+	int sequenceOnDirectionForSpecifiedChip(char _chip, C4GPoint _point, C4GPoint _direction);
 
-	int possibleSequenceOnDirection(int _x, int _y, int _dx, int _dy);
-	int possibleSequenceOnDirectionForSpecifiedChip(char _chip, int _x, int _y, int _dx, int _dy);
+	int possibleSequenceOnDirection(C4GPoint, C4GPoint _direction);
+	int possibleSequenceOnDirectionForSpecifiedChip(char _chip, C4GPoint _point, C4GPoint _direction);
 };
 
 #endif
