@@ -25,10 +25,10 @@ public:
 		Player2Wins = 3,
 	};
 
-	void start();
 	Connect4Game(Connect4Player* _p1, Connect4Player* _p2, int _rows, int _columns);
 	Connect4Game(Connect4Player* _p1, Connect4Player* _p2);
 
+	void start();
 	char** getField();
 	int getColumns();
 	int getRows();
@@ -67,7 +67,6 @@ private:
 	{
 		struct LastTurn
 		{
-			char chip;
 			int column;
 			int row;
 		};
@@ -79,6 +78,7 @@ private:
 
 	char** field_;
 	Connect4Player* players_[2];
+
 	Connect4View* attachedView_;
 	GameOptions options_;
 	CurrentState now_;
@@ -88,6 +88,7 @@ private:
 	void updateCurrentCondition();
 	bool pushChip(int, char);
 	void attachView(Connect4View*);
+	void setLastTurnCoord(int, int);
 
 	int maxSequenceForSpecifiedChip(char _chip, Point _point);
 	int sequenceOnDirectionForSpecifiedChip(char _chip, Point _point, Point _direction);

@@ -219,6 +219,12 @@ void Connect4Game::setCustomView(Connect4View* _view)
 	this->attachView(_view);
 }
 
+void Connect4Game::setLastTurnCoord(int _column, int _row)
+{
+	now_.lastTurn.column = _column;
+	now_.lastTurn.row = _row;
+}
+
 bool Connect4Game::pushChip(int _column, char _ch)
 {
 	for (int i = options_.rows - 1; i >= 0; i--)
@@ -226,8 +232,7 @@ bool Connect4Game::pushChip(int _column, char _ch)
 		if (field_[i][_column] == options_.emptyCellCharacter)
 		{
 			field_[i][_column] = _ch;
-			now_.lastTurn.column = _column;
-			now_.lastTurn.row = i;
+			setLastTurnCoord(_column, i);
 			return true;
 		}
 	}
