@@ -77,7 +77,11 @@ Connect4Game::Connect4Game(Connect4Player* _p1, Connect4Player* _p2, int _rows =
 
 	initField(field_, _rows, _columns, options_.emptyCellCharacter);
 
-	if (_p1->getChip() == _p2->getChip())
+	if (_p1->getChip() == _p2->getChip()
+		||
+		_p1->getChip() == (int)DefaultOptions::UnknownWinner
+		||
+		_p2->getChip() == (int)DefaultOptions::UnknownWinner)
 	{ 
 		_p1->setChip(options_.firstPlayerCharacter);
 		_p2->setChip(options_.secondPlayerCharacter);
