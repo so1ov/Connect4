@@ -6,8 +6,9 @@
 class Connect4ViewConsole : public Connect4View
 {
 public:
-	void refresh();
-	Connect4ViewConsole(Connect4Game*);
+	explicit Connect4ViewConsole(Connect4Game*);
+
+	void refresh();	
 };
 
 #endif

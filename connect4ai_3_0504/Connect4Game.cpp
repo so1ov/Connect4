@@ -94,7 +94,7 @@ std::pair<Connect4Game::GameCondition, char> Connect4Game::getCurrentCondition()
 	}
 }
 
-void initField(char**& _field, int _rows, int _columns, char _cell)
+void Connect4Game::initField(char**& _field, const int _rows, const int _columns, const char _cell)
 {
 	_field = new char*[_rows];
 	for (int i = 0; i < _rows; i++)
@@ -107,7 +107,7 @@ void initField(char**& _field, int _rows, int _columns, char _cell)
 	}
 }
 
-Connect4Game::Connect4Game(Connect4Player* _p1, Connect4Player* _p2, int _rows = (int)DefaultOptions::Rows, int _columns = (int)DefaultOptions::Columns)
+Connect4Game::Connect4Game(Connect4Player* _p1, Connect4Player* _p2, const int _rows = (int)DefaultOptions::Rows, const int _columns = (int)DefaultOptions::Columns)
 {
 	options_.rows = _rows;
 	options_.columns = _columns;
@@ -164,7 +164,7 @@ void Connect4Game::attachView(Connect4View* _view)
 	this->attachedView_ = _view;
 }
 
-int Connect4Game::maxSequenceForSpecifiedChip(char _chip, Point _point)
+int Connect4Game::maxSequenceForSpecifiedChip(const char _chip, const Point _point)
 {
 	int currentSequence;
 	int maxSequence = 0;
@@ -187,7 +187,7 @@ int Connect4Game::maxSequenceForSpecifiedChip(char _chip, Point _point)
 	return maxSequence;
 }
 
-int Connect4Game::sequenceOnDirectionForSpecifiedChip(char _chip, Point _point, Point _direction)
+int Connect4Game::sequenceOnDirectionForSpecifiedChip(const char _chip, const Point _point, const Point _direction)
 {
 
 	int currentX = _point.x + _direction.x;
@@ -219,13 +219,13 @@ void Connect4Game::setCustomView(Connect4View* _view)
 	this->attachView(_view);
 }
 
-void Connect4Game::setLastTurnCoord(int _column, int _row)
+void Connect4Game::setLastTurnCoord(const int _column, const int _row)
 {
 	now_.lastTurn.column = _column;
 	now_.lastTurn.row = _row;
 }
 
-bool Connect4Game::pushChip(int _column, char _ch)
+bool Connect4Game::pushChip(const int _column, const char _ch)
 {
 	for (int i = options_.rows - 1; i >= 0; i--)
 	{

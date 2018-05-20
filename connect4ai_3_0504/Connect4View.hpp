@@ -8,9 +8,10 @@ class Connect4Game;
 class Connect4View
 {
 public:
+	explicit Connect4View(Connect4Game*);
+
 	void attachGame(Connect4Game* a);
 	virtual void refresh() = 0;
-	Connect4View(Connect4Game*);
 protected:
 	Connect4Game* attachedGame_;
 };

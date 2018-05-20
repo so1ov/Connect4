@@ -25,8 +25,8 @@ public:
 		Player2Wins = 3,
 	};
 
-	Connect4Game(Connect4Player* _p1, Connect4Player* _p2, int _rows, int _columns);
-	Connect4Game(Connect4Player* _p1, Connect4Player* _p2);
+	explicit Connect4Game(Connect4Player* _p1, Connect4Player* _p2, const int _rows, const int _columns);
+	explicit Connect4Game(Connect4Player* _p1, Connect4Player* _p2);
 
 	void start();
 	char** getField();
@@ -86,12 +86,13 @@ private:
 
 	void gameLoop();
 	void updateCurrentCondition();
-	bool pushChip(int, char);
-	void attachView(Connect4View*);
-	void setLastTurnCoord(int, int);
+	bool pushChip(const int _column, const char _chip);
+	void attachView(Connect4View* _view);
+	void initField(char**& _field, const int _rows, const int _columns, const char _cell);
+	void setLastTurnCoord(const int _row, const int _column);
 
-	int maxSequenceForSpecifiedChip(char _chip, Point _point);
-	int sequenceOnDirectionForSpecifiedChip(char _chip, Point _point, Point _direction);
+	int maxSequenceForSpecifiedChip(const char _chip, const Point _point);
+	int sequenceOnDirectionForSpecifiedChip(const char _chip, const Point _point, const Point _direction);
 };
 
 using C4GPoint = Connect4Game::Point;

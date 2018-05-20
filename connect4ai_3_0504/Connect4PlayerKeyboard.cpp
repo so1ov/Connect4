@@ -6,7 +6,7 @@
 #include "windows.h"
 #include <iostream>
 
-Connect4PlayerKeyboard::Connect4PlayerKeyboard(char _ch)
+Connect4PlayerKeyboard::Connect4PlayerKeyboard(const char _ch)
 	: Connect4Player(_ch)
 {
 

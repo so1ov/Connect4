@@ -6,7 +6,7 @@
 class Connect4PlayerKeyboard : public Connect4Player
 {
 public:
-	Connect4PlayerKeyboard(char _ch);
+	explicit Connect4PlayerKeyboard(const char _ch);
 private:
 	int makeTurn();
 

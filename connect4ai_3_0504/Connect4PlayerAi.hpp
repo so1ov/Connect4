@@ -8,25 +8,25 @@
 class Connect4PlayerAi : public Connect4Player
 {
 public:
-	Connect4PlayerAi(char _ch);
+	explicit Connect4PlayerAi(const char _ch);
 
 private:
 	int makeTurn();
 	int decision();
-	int findFreeRow(int column);
+	int findFreeRow(const int _column);
 	int firstFreeColumn();
 
-	int maxSequence(C4GPoint);
-	int maxSequenceForSpecifiedChip(char _chip, C4GPoint _point);
+	int maxSequence(const C4GPoint _point);
+	int maxSequenceForSpecifiedChip(const char _chip, const C4GPoint _point);
 
-	int maxPossibleSequence(C4GPoint);
-	int maxPossibleSequenceForSpecifiedChip(char _chip, C4GPoint _point);
+	int maxPossibleSequence(const C4GPoint _point);
+	int maxPossibleSequenceForSpecifiedChip(const char _chip, const C4GPoint _point);
 
-	int sequenceOnDirection(C4GPoint _point, C4GPoint _direction);
-	int sequenceOnDirectionForSpecifiedChip(char _chip, C4GPoint _point, C4GPoint _direction);
+	int sequenceOnDirection(const C4GPoint _point, const C4GPoint _direction);
+	int sequenceOnDirectionForSpecifiedChip(const char _chip, const C4GPoint _point, const C4GPoint _direction);
 
-	int possibleSequenceOnDirection(C4GPoint, C4GPoint _direction);
-	int possibleSequenceOnDirectionForSpecifiedChip(char _chip, C4GPoint _point, C4GPoint _direction);
+	int possibleSequenceOnDirection(const C4GPoint _point, const C4GPoint _direction);
+	int possibleSequenceOnDirectionForSpecifiedChip(const char _chip, const C4GPoint _point, const C4GPoint _direction);
 };
 
 #endif
