@@ -18,9 +18,18 @@ void Connect4ViewConsole::refresh()
 		std::cout << std::endl;
 	}
 	
-	if (attachedGame_->getWinnerChip() != attachedGame_->getOptions().unknownWinner)
+	auto condition = attachedGame_->getCurrentCondition();
+	switch (condition.first)
 	{
-		std::cout << "Player " << attachedGame_->getWinnerChip() << " wins!" << std::endl;
+	case Connect4Game::GameCondition::InProcess:
+		break;
+	case Connect4Game::GameCondition::Draw:
+		std::cout << "Draw!" << std::endl;
+		break;
+	case Connect4Game::GameCondition::Player1Wins:
+	case Connect4Game::GameCondition::Player2Wins:
+		std::cout << "Player " << condition.second << " wins!" << std::endl;
+		break;
 	}
 }
 

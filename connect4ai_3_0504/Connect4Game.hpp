@@ -11,6 +11,20 @@ class Connect4Game
 private:
 	struct GameOptions;
 public:
+	struct Point
+	{
+		int x;
+		int y;
+	};
+
+	enum class GameCondition
+	{
+		InProcess = 0,
+		Draw = 1,
+		Player1Wins = 2,
+		Player2Wins = 3,
+	};
+
 	void start();
 	Connect4Game(Connect4Player* _p1, Connect4Player* _p2, int _rows, int _columns);
 	Connect4Game(Connect4Player* _p1, Connect4Player* _p2);
@@ -20,14 +34,7 @@ public:
 	int getRows();
 	GameOptions getOptions();
 	void setCustomView(Connect4View*);
-	void win(Connect4Player*);
-	char getWinnerChip();
-
-	struct Point
-	{
-		int x;
-		int y;
-	};
+	std::pair<GameCondition, char> getCurrentCondition();
 
 	static Point oppositeDirections[][2];
 	static int numberOfPairs;
@@ -60,14 +67,14 @@ private:
 	{
 		struct LastTurn
 		{
-			char chip_;
-			int column_;
-			int row_;
+			char chip;
+			int column;
+			int row;
 		};
 
 		int turn = 0;
 		LastTurn lastTurn;
-		char winner = (char)DefaultOptions::UnknownWinner;
+		GameCondition condition;
 	};
 
 	char** field_;
@@ -78,7 +85,7 @@ private:
 
 
 	void gameLoop();
-	int gameOver();
+	void updateCurrentCondition();
 	bool pushChip(int, char);
 	void attachView(Connect4View*);
 

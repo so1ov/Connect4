@@ -41,19 +41,56 @@ void Connect4Game::gameLoop()
 			turnIsValid = this->pushChip(players_[now_.turn % 2]->makeTurn(),
 				players_[now_.turn % 2]->getChip());
 		}
+		updateCurrentCondition();
 		attachedView_->refresh();
-	} while (!gameOver());
+	} while (now_.condition == GameCondition::InProcess);
 }
 
-int Connect4Game::gameOver()
+void Connect4Game::updateCurrentCondition()
 {
-	if (now_.turn == options_.columns * options_.rows || now_.winner != (char)DefaultOptions::UnknownWinner)
+	Connect4Player& lastPlayer = *( players_[now_.turn % 2] );
+	int sequenceForLastPlayer = maxSequenceForSpecifiedChip(lastPlayer.getChip(), { now_.lastTurn.column, now_.lastTurn.row });
+	if (sequenceForLastPlayer >= options_.winSequence)
 	{
-		return 1;
+		if (now_.turn % 2 == 0)
+		{
+			now_.condition = GameCondition::Player1Wins;
+			return;
+		}
+		else if (now_.turn % 2 == 1)
+		{
+			now_.condition = GameCondition::Player2Wins;
+			return;
+		}
+		else
+		{
+			throw new std::exception("Not implemented >2 players support");
+		}
+	}
+	if (now_.turn == options_.columns * options_.rows)
+	{
+		now_.condition = GameCondition::Draw;
 	}
 	else
 	{
-		return 0;
+		now_.condition = GameCondition::InProcess;
+	}
+}
+
+std::pair<Connect4Game::GameCondition, char> Connect4Game::getCurrentCondition()
+{
+	switch (now_.condition)
+	{
+	case GameCondition::InProcess:
+	case GameCondition::Draw:
+		return std::pair<Connect4Game::GameCondition, char>(now_.condition, 0);
+		break;
+	case GameCondition::Player1Wins:
+		return std::pair<Connect4Game::GameCondition, char>(now_.condition, players_[0]->getChip());
+		break;
+	case GameCondition::Player2Wins:
+		return std::pair<Connect4Game::GameCondition, char>(now_.condition, players_[1]->getChip());
+		break;
 	}
 }
 
@@ -102,16 +139,6 @@ Connect4Game::Connect4Game(Connect4Player* _p1, Connect4Player* _p2)
 	
 }
 
-void Connect4Game::win(Connect4Player* _player)
-{
-	now_.winner = _player->getChip();
-}
-
-char Connect4Game::getWinnerChip()
-{
-	return now_.winner;
-}
-
 char** Connect4Game::getField()
 {
 	return field_;
@@ -145,7 +172,7 @@ int Connect4Game::maxSequenceForSpecifiedChip(char _chip, Point _point)
 
 	for (int thisPair = 0; thisPair < Connect4Game::numberOfPairs; thisPair++)
 	{
-		currentSequence = 0;
+		currentSequence = 1;
 		for (int currentDirection = 0; currentDirection < Connect4Game::pairOfOppositeDirections; currentDirection++)
 		{
 			direction = Connect4Game::oppositeDirections[thisPair][currentDirection];
@@ -199,8 +226,8 @@ bool Connect4Game::pushChip(int _column, char _ch)
 		if (field_[i][_column] == options_.emptyCellCharacter)
 		{
 			field_[i][_column] = _ch;
-			now_.lastTurn.column_ = _column;
-			now_.lastTurn.row_ = i;
+			now_.lastTurn.column = _column;
+			now_.lastTurn.row = i;
 			return true;
 		}
 	}

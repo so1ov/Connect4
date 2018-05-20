@@ -131,7 +131,7 @@ int Connect4PlayerAi::maxSequenceForSpecifiedChip(char _chip, C4GPoint _point)
 
 	for (int thisPair = 0; thisPair < Connect4Game::numberOfPairs; thisPair++)
 	{
-		currentSequence = 0;
+		currentSequence = 1;
 		for (int currentDirection = 0; currentDirection < Connect4Game::pairOfOppositeDirections; currentDirection++)
 		{
 			direction = Connect4Game::oppositeDirections[thisPair][currentDirection];
@@ -201,11 +201,6 @@ int Connect4PlayerAi::decision()
 			bestSequence = currentColumnMaxSequence;
 			bestSequenceColumn = column;
 		}
-	}
-
-	if (bestSequence + 1 >= attachedGame_->getOptions().winSequence)
-	{
-		attachedGame_->win(this);
 	}
 
 	if (bestSequenceColumn != -1)
