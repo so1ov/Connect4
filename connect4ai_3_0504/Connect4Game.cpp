@@ -20,91 +20,11 @@ C4GPoint Connect4Game::oppositeDirections[][2] =
 };
 
 int Connect4Game::numberOfPairs = sizeof(oppositeDirections) / sizeof(oppositeDirections[0]);
-int Connect4Game::pairOfOppositeVectors = sizeof(oppositeDirections[0]) / sizeof(oppositeDirections[0][0]);
+int Connect4Game::pairOfOppositeDirections = sizeof(oppositeDirections[0]) / sizeof(oppositeDirections[0][0]);
 
 void Connect4Game::start()
 {
 	this->gameLoop();
-}
-
-bool Connect4Game::pointOnField(Connect4Game::Point _point)
-{
-	return _point.X >= 0 && _point.X < getColumns()
-		&&
-		_point.Y >= 0 && _point.Y < getRows();
-}
-
-int Connect4Game::maxSequenceOfSpecifiedChipOnThisStraight(Point _point, Point _direction, char _chip)
-{
-	C4GPoint straightBorder = _point;
-	int currentSequence = 0;
-	int maxSequence = -1;
-	while (pointOnField(straightBorder))
-	{
-		straightBorder.X -= _direction.X;
-		straightBorder.Y -= _direction.Y;
-	}
-
-	while (pointOnField(straightBorder))
-	{
-		if (field_[straightBorder.Y][straightBorder.X] == _chip)
-		{
-			currentSequence++;
-		}
-		else
-		{
-			if (currentSequence > maxSequence)
-			{
-				maxSequence = currentSequence;
-			}
-			currentSequence = 0;		
-		}
-
-		straightBorder.X += _direction.X;
-		straightBorder.Y += _direction.Y;
-	}
-	return maxSequence;
-}
-
-bool Connect4Game::findWinSequenceOfSpecifiedChipOnAllStraightsThroughPoint(Point _point, char _chip)
-{
-	C4GPoint direction;
-	int sequence;
-	for (int thisPair = 0; thisPair < Connect4Game::numberOfPairs; thisPair++)
-	{
-		sequence = 0;
-		for (int thisVector = 0; thisVector < Connect4Game::pairOfOppositeVectors; thisVector++)
-		{
-			direction = Connect4Game::oppositeDirections[thisPair][thisVector];
-			sequence = maxSequenceOfSpecifiedChipOnThisStraight(_point, direction, _chip);
-			if (sequence >= WinSequence)
-			{
-				return true;
-			}
-		}
-	}
-
-	return false;
-}
-
-
-
-void Connect4Game::calculateGameOver()
-{
-	C4GPoint diagonalPoint;
-	int sequence;
-	for (int i = 0, j = 0; i < getColumns() && j < getRows(); i++, j++)
-	{
-		diagonalPoint = { i, j };
-		for (int player = 0; player < sizeof(players_) / sizeof(players_[0]); player++)
-		{
-			if (findWinSequenceOfSpecifiedChipOnAllStraightsThroughPoint(diagonalPoint, players_[player]->getChip()))
-			{
-				now_.winner = players_[player]->getChip();
-				return;
-			}
-		}
-	}
 }
 
 void Connect4Game::gameLoop()
@@ -121,20 +41,19 @@ void Connect4Game::gameLoop()
 			turnIsValid = this->pushChip(players_[now_.turn % 2]->makeTurn(),
 				players_[now_.turn % 2]->getChip());
 		}
-		this->calculateGameOver();
 		attachedView_->refresh();
 	} while (!gameOver());
 }
 
-bool Connect4Game::gameOver()
+int Connect4Game::gameOver()
 {
 	if (now_.turn == options_.columns * options_.rows || now_.winner != (char)DefaultOptions::UnknownWinner)
 	{
-		return true;
+		return 1;
 	}
 	else
 	{
-		return false;
+		return 0;
 	}
 }
 
@@ -158,7 +77,11 @@ Connect4Game::Connect4Game(Connect4Player* _p1, Connect4Player* _p2, int _rows =
 
 	initField(field_, _rows, _columns, options_.emptyCellCharacter);
 
-	if (_p1->getChip() == _p2->getChip())
+	if (_p1->getChip() == _p2->getChip()
+		||
+		_p1->getChip() == (int)DefaultOptions::UnknownWinner
+		||
+		_p2->getChip() == (int)DefaultOptions::UnknownWinner)
 	{ 
 		_p1->setChip(options_.firstPlayerCharacter);
 		_p2->setChip(options_.secondPlayerCharacter);
@@ -214,6 +137,56 @@ void Connect4Game::attachView(Connect4View* _view)
 	this->attachedView_ = _view;
 }
 
+int Connect4Game::maxSequenceForSpecifiedChip(char _chip, Point _point)
+{
+	int currentSequence;
+	int maxSequence = 0;
+	C4GPoint direction;
+
+	for (int thisPair = 0; thisPair < Connect4Game::numberOfPairs; thisPair++)
+	{
+		currentSequence = 0;
+		for (int currentDirection = 0; currentDirection < Connect4Game::pairOfOppositeDirections; currentDirection++)
+		{
+			direction = Connect4Game::oppositeDirections[thisPair][currentDirection];
+			currentSequence += sequenceOnDirectionForSpecifiedChip(_chip, _point, direction);
+		}
+		if (currentSequence > maxSequence)
+		{
+			maxSequence = currentSequence;
+		}
+	}
+
+	return maxSequence;
+}
+
+int Connect4Game::sequenceOnDirectionForSpecifiedChip(char _chip, Point _point, Point _direction)
+{
+
+	int currentX = _point.x + _direction.x;
+	int currentY = _point.y + _direction.y;
+	int sequence = 0;
+
+	while (currentX < options_.columns && currentX >= 0
+		&&
+		currentY < options_.rows && currentY >= 0)
+	{
+		if (_chip == field_[currentY][currentX])
+		{
+			sequence++;
+		}
+		else
+		{
+			break;
+		}
+
+		currentX += _direction.x;
+		currentY += _direction.y;
+	}
+
+	return sequence;
+}
+
 void Connect4Game::setCustomView(Connect4View* _view)
 {
 	this->attachView(_view);
@@ -226,14 +199,11 @@ bool Connect4Game::pushChip(int _column, char _ch)
 		if (field_[i][_column] == options_.emptyCellCharacter)
 		{
 			field_[i][_column] = _ch;
+			now_.lastTurn.column_ = _column;
+			now_.lastTurn.row_ = i;
 			return true;
 		}
 	}
 
 	return false;
 }
-
-
-
-
-

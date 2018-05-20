@@ -3,11 +3,8 @@
 
 #include <iostream>
 
-#include "Connect4Player.hpp"
-#include "Connect4View.hpp"
-#include "Connect4ViewConsole.hpp"
-#include "Connect4PlayerAi.hpp"
-#include "Connect4PlayerKeyboard.hpp"
+class Connect4Player;
+class Connect4View;
 
 class Connect4Game
 {
@@ -26,7 +23,15 @@ public:
 	void win(Connect4Player*);
 	char getWinnerChip();
 
+	struct Point
+	{
+		int x;
+		int y;
+	};
 
+	static Point oppositeDirections[][2];
+	static int numberOfPairs;
+	static int pairOfOppositeDirections;
 
 private:
 	enum class DefaultOptions
@@ -40,20 +45,6 @@ private:
 		UnknownWinner = '?'
 	};
 
-	struct CurrentState
-	{
-		struct LastTurn
-		{
-			char chip_;
-			int x_;
-			int y_;
-		};
-
-		int turn = 0;
-		LastTurn lastTurn;
-		char winner = (char)DefaultOptions::UnknownWinner;
-	};
-
 	struct GameOptions
 	{
 		int rows = (int)DefaultOptions::Rows;
@@ -63,6 +54,20 @@ private:
 		char secondPlayerCharacter = (int)DefaultOptions::SecondPlayerCharacter;
 		char emptyCellCharacter = (int)DefaultOptions::EmptyCellCharacter;
 		char unknownWinner = (int)DefaultOptions::UnknownWinner;
+	};
+
+	struct CurrentState
+	{
+		struct LastTurn
+		{
+			char chip_;
+			int column_;
+			int row_;
+		};
+
+		int turn = 0;
+		LastTurn lastTurn;
+		char winner = (char)DefaultOptions::UnknownWinner;
 	};
 
 	char** field_;
@@ -76,6 +81,17 @@ private:
 	int gameOver();
 	bool pushChip(int, char);
 	void attachView(Connect4View*);
+
+	int maxSequenceForSpecifiedChip(char _chip, Point _point);
+	int sequenceOnDirectionForSpecifiedChip(char _chip, Point _point, Point _direction);
 };
+
+using C4GPoint = Connect4Game::Point;
+
+#include "Connect4Player.hpp"
+#include "Connect4View.hpp"
+#include "Connect4ViewConsole.hpp"
+#include "Connect4PlayerAi.hpp"
+#include "Connect4PlayerKeyboard.hpp"
 
 #endif
