@@ -92,6 +92,7 @@ std::pair<Connect4Game::GameCondition, char> Connect4Game::getCurrentCondition()
 		return std::pair<Connect4Game::GameCondition, char>(now_.condition, players_[1]->getChip());
 		break;
 	}
+	return std::pair<Connect4Game::GameCondition, char>(now_.condition, 0);
 }
 
 void initField(char**& _field, int _rows, int _columns, char _cell)
