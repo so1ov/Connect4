@@ -1,8 +1,8 @@
-#include "Connect4ViewConsole.hpp"
+#include "ViewConsole.hpp"
 
-#include "Connect4Game.hpp"
+#include "Game.hpp"
 
-void Connect4ViewConsole::refresh()
+void Connect4::ViewConsole::refresh()
 {
 	static char** field = attachedGame_->getField();
 	static int rows = this->attachedGame_->getRows();
@@ -21,20 +21,20 @@ void Connect4ViewConsole::refresh()
 	auto condition = attachedGame_->getCurrentCondition();
 	switch (condition.first)
 	{
-	case Connect4Game::GameCondition::InProcess:
+	case Game::GameCondition::InProcess:
 		break;
-	case Connect4Game::GameCondition::Draw:
+	case Game::GameCondition::Draw:
 		std::cout << "Draw!" << std::endl;
 		break;
-	case Connect4Game::GameCondition::Player1Wins:
-	case Connect4Game::GameCondition::Player2Wins:
+	case Game::GameCondition::Player1Wins:
+	case Game::GameCondition::Player2Wins:
 		std::cout << "Player " << condition.second << " wins!" << std::endl;
 		break;
 	}
 }
 
-Connect4ViewConsole::Connect4ViewConsole(Connect4Game* _attachedGame)
-	: Connect4View(_attachedGame)
+Connect4::ViewConsole::ViewConsole(Connect4::Game* _attachedGame)
+	: View(_attachedGame)
 {
 
 }

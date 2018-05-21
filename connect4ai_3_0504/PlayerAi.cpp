@@ -1,21 +1,21 @@
-#include "Connect4PlayerAi.hpp"
+#include "PlayerAi.hpp"
 
-#include "Connect4Game.hpp"
+#include "Game.hpp"
 
 #include "windows.h"
 
-Connect4PlayerAi::Connect4PlayerAi(const char _ch)
-	: Connect4Player(_ch)
+Connect4::PlayerAi::PlayerAi(const char _ch)
+	: Player(_ch)
 {
 
 }
 
-int Connect4PlayerAi::makeTurn()
+int Connect4::PlayerAi::makeTurn()
 {
 	return decision();
 }
 
-int Connect4PlayerAi::findFreeRow(const int _column)
+int Connect4::PlayerAi::findFreeRow(const int _column)
 {
 	static char** field = attachedGame_->getField();
 	for (int i = attachedGame_->getRows()- 1; i >= 0; i--)
@@ -28,7 +28,7 @@ int Connect4PlayerAi::findFreeRow(const int _column)
 	return -1;
 }
 
-int Connect4PlayerAi::firstFreeColumn()
+int Connect4::PlayerAi::firstFreeColumn()
 {
 	static char** field = this->attachedGame_->getField();
 	static int columns = this->attachedGame_->getColumns();
@@ -46,12 +46,12 @@ int Connect4PlayerAi::firstFreeColumn()
 	return -1;
 }
 
-int Connect4PlayerAi::sequenceOnDirection(const C4GPoint _point, const C4GPoint _direction)
+int Connect4::PlayerAi::sequenceOnDirection(const C4GPoint _point, const C4GPoint _direction)
 {
 	return sequenceOnDirectionForSpecifiedChip(this->chip_, _point, _direction);
 }
 
-int Connect4PlayerAi::sequenceOnDirectionForSpecifiedChip(const char _chip, const C4GPoint _point, const C4GPoint _direction)
+int Connect4::PlayerAi::sequenceOnDirectionForSpecifiedChip(const char _chip, const C4GPoint _point, const C4GPoint _direction)
 {
 	static char** field = this->attachedGame_->getField();
 	static int rows = this->attachedGame_->getRows();
@@ -81,12 +81,12 @@ int Connect4PlayerAi::sequenceOnDirectionForSpecifiedChip(const char _chip, cons
 	return sequence;
 }
 
-int Connect4PlayerAi::possibleSequenceOnDirection(const C4GPoint _point, const C4GPoint _direction)
+int Connect4::PlayerAi::possibleSequenceOnDirection(const C4GPoint _point, const C4GPoint _direction)
 {
 	return possibleSequenceOnDirectionForSpecifiedChip(this->chip_, _point, _direction);
 }
 
-int Connect4PlayerAi::possibleSequenceOnDirectionForSpecifiedChip(const char _chip, const C4GPoint _point, const C4GPoint _direction)
+int Connect4::PlayerAi::possibleSequenceOnDirectionForSpecifiedChip(const char _chip, const C4GPoint _point, const C4GPoint _direction)
 {
 	static char** field = this->attachedGame_->getField();
 	static int rows = this->attachedGame_->getRows();
@@ -118,23 +118,23 @@ int Connect4PlayerAi::possibleSequenceOnDirectionForSpecifiedChip(const char _ch
 	return sequence;
 }
 
-int Connect4PlayerAi::maxSequence(const C4GPoint _point)
+int Connect4::PlayerAi::maxSequence(const C4GPoint _point)
 {
 	return maxSequenceForSpecifiedChip(this->chip_, _point);
 }
 
-int Connect4PlayerAi::maxSequenceForSpecifiedChip(const char _chip, const C4GPoint _point)
+int Connect4::PlayerAi::maxSequenceForSpecifiedChip(const char _chip, const C4GPoint _point)
 {
 	int currentSequence;
 	int maxSequence = 0;
 	C4GPoint direction;
 
-	for (int thisPair = 0; thisPair < Connect4Game::numberOfPairs; thisPair++)
+	for (int thisPair = 0; thisPair < Game::numberOfPairs; thisPair++)
 	{
 		currentSequence = 1;
-		for (int currentDirection = 0; currentDirection < Connect4Game::pairOfOppositeDirections; currentDirection++)
+		for (int currentDirection = 0; currentDirection < Game::pairOfOppositeDirections; currentDirection++)
 		{
-			direction = Connect4Game::oppositeDirections[thisPair][currentDirection];
+			direction = Game::oppositeDirections[thisPair][currentDirection];
 			currentSequence += sequenceOnDirectionForSpecifiedChip(_chip, _point, direction);
 		}
 		if (currentSequence > maxSequence)
@@ -146,23 +146,23 @@ int Connect4PlayerAi::maxSequenceForSpecifiedChip(const char _chip, const C4GPoi
 	return maxSequence;
 }
 
-int Connect4PlayerAi::maxPossibleSequence(const C4GPoint _point)
+int Connect4::PlayerAi::maxPossibleSequence(const C4GPoint _point)
 {
 	return maxPossibleSequenceForSpecifiedChip(this->chip_, _point);
 }
 
-int Connect4PlayerAi::maxPossibleSequenceForSpecifiedChip(const char _chip, const C4GPoint _point)
+int Connect4::PlayerAi::maxPossibleSequenceForSpecifiedChip(const char _chip, const C4GPoint _point)
 {
 	int currentPossibleSequence;
 	int maxPossibleSequence = 0;
 	C4GPoint direction;
 
-	for (int thisPair = 0; thisPair < Connect4Game::numberOfPairs; thisPair++)
+	for (int thisPair = 0; thisPair < Game::numberOfPairs; thisPair++)
 	{
 		currentPossibleSequence = 0;
-		for (int currentDirection = 0; currentDirection < Connect4Game::pairOfOppositeDirections; currentDirection++)
+		for (int currentDirection = 0; currentDirection < Game::pairOfOppositeDirections; currentDirection++)
 		{
-			direction = Connect4Game::oppositeDirections[thisPair][currentDirection];
+			direction = Game::oppositeDirections[thisPair][currentDirection];
 			currentPossibleSequence += possibleSequenceOnDirectionForSpecifiedChip(_chip, _point, direction);
 		}
 		if (currentPossibleSequence > maxPossibleSequence)
@@ -174,7 +174,7 @@ int Connect4PlayerAi::maxPossibleSequenceForSpecifiedChip(const char _chip, cons
 	return maxPossibleSequence;
 }
 
-int Connect4PlayerAi::decision()
+int Connect4::PlayerAi::decision()
 {
 	static int columns = attachedGame_->getColumns();
 

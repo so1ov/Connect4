@@ -1,18 +1,18 @@
-#include "Connect4PlayerKeyboard.hpp"
+#include "PlayerKeyboard.hpp"
 
-#include "Connect4Game.hpp"
+#include "Game.hpp"
 
 #include "conio.h"
 #include "windows.h"
 #include <iostream>
 
-Connect4PlayerKeyboard::Connect4PlayerKeyboard(const char _ch)
-	: Connect4Player(_ch)
+Connect4::PlayerKeyboard::PlayerKeyboard(const char _ch)
+	: Player(_ch)
 {
 
 }
 
-int Connect4PlayerKeyboard::makeTurn()
+int Connect4::PlayerKeyboard::makeTurn()
 {
 	int decision = -1;
 

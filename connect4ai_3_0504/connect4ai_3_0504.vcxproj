@@ -112,21 +112,23 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Connect4Game.cpp" />
-    <ClCompile Include="Connect4Player.cpp" />
-    <ClCompile Include="Connect4PlayerAi.cpp" />
-    <ClCompile Include="Connect4PlayerKeyboard.cpp" />
-    <ClCompile Include="Connect4View.cpp" />
-    <ClCompile Include="Connect4ViewConsole.cpp" />
+    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerAi.cpp" />
+    <ClCompile Include="PlayerKeyboard.cpp" />
+    <ClCompile Include="View.cpp" />
+    <ClCompile Include="ViewConsole.cpp" />
+    <ClCompile Include="ViewQtWindow.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Connect4Game.hpp" />
-    <ClInclude Include="Connect4Player.hpp" />
-    <ClInclude Include="Connect4PlayerAi.hpp" />
-    <ClInclude Include="Connect4PlayerKeyboard.hpp" />
-    <ClInclude Include="Connect4View.hpp" />
-    <ClInclude Include="Connect4ViewConsole.hpp" />
+    <ClInclude Include="Game.hpp" />
+    <ClInclude Include="Player.hpp" />
+    <ClInclude Include="PlayerAi.hpp" />
+    <ClInclude Include="PlayerKeyboard.hpp" />
+    <ClInclude Include="View.hpp" />
+    <ClInclude Include="ViewConsole.hpp" />
+    <ClInclude Include="ViewQtWindow.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
