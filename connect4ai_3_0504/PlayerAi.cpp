@@ -7,7 +7,7 @@
 Connect4::PlayerAi::PlayerAi(const char _ch)
 	: Player(_ch)
 {
-
+	decisionsTree_.reserve(CalculationDepth);
 }
 
 int Connect4::PlayerAi::makeTurn()
@@ -211,6 +211,34 @@ int Connect4::PlayerAi::decision()
 	{
 		return firstFreeColumn();
 	}
+}
+
+int Connect4::PlayerAi::minimax()
+{
+	static int columns = attachedGame_->getColumns();
+	int depth = 0;
+	int row;
+	while (depth < CalculationDepth)
+	{
+		for (int column = 0; column < columns; column++)
+		{
+			row = findFreeRow(column);
+			if (row == -1)
+			{
+				continue;
+			}
+
+			decisionsTree_[depth].push_back({ 0, {column, row}, {0, 0} });
+		}
+
+		for (auto it : decisionsTree_[depth])
+		{
+			attachedGame_->temporarilyMove
+		}
+
+		depth++;
+	}
+	
 }
 
 

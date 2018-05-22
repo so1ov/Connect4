@@ -5,16 +5,28 @@
 
 #include "Game.hpp"
 
+#include <vector>
+#include <array>
+
 namespace Connect4
 {
 	class PlayerAi : public Player
 	{
 	public:
 		explicit PlayerAi(const char _ch);
-
 	private:
+		struct DecisionInfo
+		{
+			int value;
+			C4GPoint point;
+			C4GPoint previousTurn;
+		};
+		int CalculationDepth = 3;
+		std::vector<std::vector<DecisionInfo>> decisionsTree_;
+
 		int makeTurn();
 		int decision();
+		int minimax();
 		int findFreeRow(const int _column);
 		int firstFreeColumn();
 

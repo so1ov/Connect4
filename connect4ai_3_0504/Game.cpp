@@ -49,7 +49,7 @@ void Connect4::Game::gameLoop()
 void Connect4::Game::updateCurrentCondition()
 {
 	Player& lastPlayer = *( players_[now_.turn % 2] );
-	int sequenceForLastPlayer = maxSequenceForSpecifiedChip(lastPlayer.getChip(), { now_.lastTurn.column, now_.lastTurn.row });
+	int sequenceForLastPlayer = maxSequenceForSpecifiedChip(lastPlayer.getChip(), { now_.lastTurn.x, now_.lastTurn.y });
 	if (sequenceForLastPlayer >= options_.winSequence)
 	{
 		if (now_.turn % 2 == 0)
@@ -215,6 +215,18 @@ int Connect4::Game::sequenceOnDirectionForSpecifiedChip(const char _chip, const 
 	return sequence;
 }
 
+void Connect4::Game::temporarilyMove(const char _chip, const Point _point)
+{
+	temporarilyMoves.push({ _chip, _point });
+}
+
+std::pair<char, Connect4::C4GPoint> Connect4::Game::undoAndReturnTemporarilyMove()
+{
+	auto buff = temporarilyMoves.top();
+	temporarilyMoves.pop();
+	return buff;
+}
+
 void Connect4::Game::setCustomView(Connect4::View* _view)
 {
 	this->attachView(_view);
@@ -222,8 +234,8 @@ void Connect4::Game::setCustomView(Connect4::View* _view)
 
 void Connect4::Game::setLastTurnCoord(const int _column, const int _row)
 {
-	now_.lastTurn.column = _column;
-	now_.lastTurn.row = _row;
+	now_.lastTurn.x = _column;
+	now_.lastTurn.y = _row;
 }
 
 bool Connect4::Game::pushChip(const int _column, const char _ch)

@@ -2,6 +2,7 @@
 #define GAME_HPP
 
 #include <iostream>
+#include <stack>
 
 namespace Connect4
 {
@@ -42,6 +43,9 @@ namespace Connect4
 		static int numberOfPairs;
 		static int pairOfOppositeDirections;
 
+		void temporarilyMove(const char _chip, const Point _point);
+		std::pair<char, Point> undoAndReturnTemporarilyMove();
+
 	private:
 		enum class DefaultOptions
 		{
@@ -67,14 +71,8 @@ namespace Connect4
 
 		struct CurrentState
 		{
-			struct LastTurn
-			{
-				int column;
-				int row;
-			};
-
 			int turn = 0;
-			LastTurn lastTurn;
+			Point lastTurn;
 			GameCondition condition;
 		};
 
@@ -84,6 +82,7 @@ namespace Connect4
 		View* attachedView_;
 		GameOptions options_;
 		CurrentState now_;
+		std::stack<std::pair<char, Point>> temporarilyMoves;
 
 
 		void gameLoop();
