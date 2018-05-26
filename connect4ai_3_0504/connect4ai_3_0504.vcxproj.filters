@@ -18,42 +18,42 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Connect4Game.cpp">
+    <ClCompile Include="Game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Connect4Player.cpp">
+    <ClCompile Include="Player.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Connect4View.cpp">
+    <ClCompile Include="PlayerAi.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Connect4PlayerAi.cpp">
+    <ClCompile Include="PlayerKeyboard.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Connect4PlayerKeyboard.cpp">
+    <ClCompile Include="View.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Connect4ViewConsole.cpp">
+    <ClCompile Include="ViewConsole.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Connect4Game.hpp">
+    <ClInclude Include="Game.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Connect4Player.hpp">
+    <ClInclude Include="Player.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Connect4View.hpp">
+    <ClInclude Include="PlayerAi.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Connect4PlayerAi.hpp">
+    <ClInclude Include="PlayerKeyboard.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Connect4PlayerKeyboard.hpp">
+    <ClInclude Include="View.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Connect4ViewConsole.hpp">
+    <ClInclude Include="ViewConsole.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

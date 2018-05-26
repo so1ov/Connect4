@@ -1,13 +1,14 @@
-#include "Connect4Game.hpp"
+#include "Game.hpp"
 
 #include "windows.h"
 #include <iostream>
 
 int main()
 {
-	Connect4Player* p1 = new Connect4PlayerAi('X');
-	Connect4Player* p2 = new Connect4PlayerAi('O');
-	(new Connect4Game(p1, p2))->start();
+	using namespace Connect4;
+	Player* p1 = new PlayerAi('X');
+	Player* p2 = new PlayerAi('O');
+	(new Game(p1, p2))->start();
 	system("pause");
 }
 
