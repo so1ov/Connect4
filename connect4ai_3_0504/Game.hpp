@@ -45,6 +45,7 @@ namespace Connect4
 
 		void temporarilyMove(const char _chip, const Point _point);
 		std::pair<char, Point> undoAndReturnTemporarilyMove();
+		void clearTemporarilyMoves();
 
 	private:
 		enum class DefaultOptions

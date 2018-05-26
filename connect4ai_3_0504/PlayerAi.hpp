@@ -17,6 +17,7 @@ namespace Connect4
 	private:
 		struct DecisionInfo
 		{
+			int depth;
 			int value;
 			C4GPoint point;
 			C4GPoint previousTurn;
@@ -29,6 +30,8 @@ namespace Connect4
 		int minimax();
 		int findFreeRow(const int _column);
 		int firstFreeColumn();
+
+		int heuristic();
 
 		int maxSequence(const C4GPoint _point);
 		int maxSequenceForSpecifiedChip(const char _chip, const C4GPoint _point);

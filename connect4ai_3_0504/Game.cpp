@@ -227,6 +227,14 @@ std::pair<char, Connect4::C4GPoint> Connect4::Game::undoAndReturnTemporarilyMove
 	return buff;
 }
 
+void Connect4::Game::clearTemporarilyMoves()
+{
+	while (!temporarilyMoves.empty())
+	{
+		temporarilyMoves.pop();
+	}
+}
+
 void Connect4::Game::setCustomView(Connect4::View* _view)
 {
 	this->attachView(_view);

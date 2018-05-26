@@ -46,6 +46,11 @@ int Connect4::PlayerAi::firstFreeColumn()
 	return -1;
 }
 
+int Connect4::PlayerAi::heuristic()
+{
+	return 0;
+}
+
 int Connect4::PlayerAi::sequenceOnDirection(const C4GPoint _point, const C4GPoint _direction)
 {
 	return sequenceOnDirectionForSpecifiedChip(this->chip_, _point, _direction);
@@ -213,30 +218,46 @@ int Connect4::PlayerAi::decision()
 	}
 }
 
+/* TODO: рекурсия*/
 int Connect4::PlayerAi::minimax()
 {
 	static int columns = attachedGame_->getColumns();
-	int depth = 0;
+	int depth = 1;
 	int row;
+
+	std::stack<char, C4GPoint> previousMoves;
+
+	for (int column = 0; column < columns; column++)
+	{
+		row = findFreeRow(column);
+		if (row == -1)
+		{
+			continue;
+		}
+
+		decisionsTree_[depth].push_back({ depth, heuristic(),{ column, row },{ 0, 0 } });
+	}
+
 	while (depth < CalculationDepth)
 	{
-		for (int column = 0; column < columns; column++)
+		depth++;
+		for (auto it : decisionsTree_[depth - 1])
 		{
-			row = findFreeRow(column);
-			if (row == -1)
+			attachedGame_->temporarilyMove('-', it.point);
+
+			for (int column = 0; column < columns; column++)
 			{
-				continue;
+				row = findFreeRow(column);
+				if (row == -1)
+				{
+					continue;
+				}
+
+				decisionsTree_[depth].push_back({ depth, heuristic(),{ column, row },{ 0, 0 } });
 			}
 
-			decisionsTree_[depth].push_back({ 0, {column, row}, {0, 0} });
+			attachedGame_->clearTemporarilyMoves();
 		}
-
-		for (auto it : decisionsTree_[depth])
-		{
-			attachedGame_->temporarilyMove
-		}
-
-		depth++;
 	}
 	
 }
