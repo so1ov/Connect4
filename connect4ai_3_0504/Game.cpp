@@ -84,20 +84,20 @@ void Connect4::Game::updateCurrentCondition()
 
 std::pair<Connect4::Game::GameCondition, char> Connect4::Game::getCurrentCondition()
 {
-	switch (now_.condition)
+	switch(now_.condition)
 	{
 	case GameCondition::InProcess:
 	case GameCondition::Draw:
-		return std::pair<Game::GameCondition, char>(now_.condition, 0);
+		return std::pair<Connect4::Game::GameCondition, char>(now_.condition, 0);
 		break;
 	case GameCondition::Player1Wins:
-		return std::pair<Game::GameCondition, char>(now_.condition, players_[0]->getChip());
+		return std::pair<Connect4::Game::GameCondition, char>(now_.condition, players_[0]->getChip());
 		break;
 	case GameCondition::Player2Wins:
-		return std::pair<Game::GameCondition, char>(now_.condition, players_[1]->getChip());
+		return std::pair<Connect4::Game::GameCondition, char>(now_.condition, players_[1]->getChip());
 		break;
 	}
-	return std::pair<Game::GameCondition, char>(now_.condition, 0);
+	return std::pair<Connect4::Game::GameCondition, char>(now_.condition, 0);
 }
 
 void Connect4::Game::initField(char**& _field, int _rows, int _columns, char _cell)
