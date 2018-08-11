@@ -1,5 +1,10 @@
 #include "Game.hpp"
 
+#include "View.hpp"
+#include "ViewConsole.hpp"
+#include "Player.hpp"
+#include "PlayerAi.hpp"
+
 #include <iostream>
 #include <string>
 

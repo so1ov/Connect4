@@ -1,9 +1,6 @@
 #include "View.hpp"
+
 #include "Game.hpp"
-
-#include "windows.h"
-
-#include <iostream>
 
 void Connect4::View::attachGame(Game* _game)
 {

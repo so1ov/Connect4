@@ -1,8 +1,6 @@
 #ifndef View_HPP
 #define View_HPP
 
-#include <iostream>
-
 namespace Connect4
 {
 	class Game;

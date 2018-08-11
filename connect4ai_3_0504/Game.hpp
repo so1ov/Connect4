@@ -100,10 +100,4 @@ namespace Connect4
 	using C4GPoint = Game::Point;
 }
 
-#include "Player.hpp"
-#include "View.hpp"
-#include "ViewConsole.hpp"
-#include "PlayerAi.hpp"
-#include "PlayerKeyboard.hpp"
-
 #endif
